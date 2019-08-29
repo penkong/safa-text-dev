@@ -1,10 +1,11 @@
 <template>
   <div>
+    <!-- readonly counter -->
     <q-input
-      square
       outlined
       bottom-slots
       v-model="text"
+      standout="bg-lime-1 text-{color}"
       :id="idOfInput"
       :type="type"
       :label="label"
@@ -12,12 +13,18 @@
       counter
       maxlength="65"
       :dense="dense"
+      :hint="helper"
     >
-      <template v-if="lang" v-slot:before>
-        <q-icon :name="icon" />
-      </template>
-      <template v-else v-slot:after>
-        <q-btn round dense flat :icon="icon" />
+      <template v-slot:after>
+        <q-btn
+          name="cancel"
+          round
+          dense
+          flat
+          icon="cancel"
+          @click.stop="text = null"
+          class="cursor-pointer"
+        />
       </template>
     </q-input>
   </div>

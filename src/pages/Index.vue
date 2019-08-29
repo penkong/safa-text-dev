@@ -29,6 +29,7 @@ export default {
   data() {
     return {
       m: "r",
+      id: "43434",
       type: "text",
       value: "",
       label: "نام",
@@ -38,7 +39,7 @@ export default {
       padding: 3,
       iconsize: "24px",
       icon: "event",
-      color: "brown",
+      color: "blue",
       c: "5"
     };
   }
