@@ -1,14 +1,25 @@
 <template>
   <q-page class="flex flex-center">
-    <SafaQuasarText />
-    <!-- <SafaText :type="type" :placeholder="placeholder" :label="label" :padding="padding" /> -->
+    <SafaQuasarText
+      :m="m"
+      :type="type"
+      :value="value"
+      :label="label"
+      :placeholder="placeholder"
+      :helper="helper"
+      :errorlabel="errorlabel"
+      :padding="padding"
+      :iconsize="iconsize"
+      :icon="icon"
+      :color="color"
+      :c="c"
+    />
   </q-page>
 </template>
 
 <style></style>
 
 <script>
-// import SafaText from "../components/SafaText";
 import SafaQuasarText from "../components/SafaQuasarText";
 export default {
   name: "PageIndex",
@@ -17,18 +28,18 @@ export default {
   },
   data() {
     return {
-      padding: 3,
-      iconsize: "24px",
-      icon: "pig",
-      color: "",
+      m: "r",
+      type: "text",
+      value: "",
+      label: "نام",
       placeholder: "ورود اطلاعات",
       helper: "شما اینجایی",
       errorlabel: "تصحیح شود",
-      type: "text",
-      m: "r",
-      c: "5",
-      value: "",
-      label: "نام"
+      padding: 3,
+      iconsize: "24px",
+      icon: "event",
+      color: "brown",
+      c: "5"
     };
   }
 };

@@ -1,13 +1,24 @@
 <template>
   <div>
-    <q-input :id="id" square outlined v-model="text" label="Square outlined">
-      <template v-if="lang" v-slot:append>
-        <q-icon name="place" />
+    <q-input
+      square
+      outlined
+      bottom-slots
+      v-model="text"
+      :id="idOfInput"
+      :type="type"
+      :label="label"
+      :color="color"
+      counter
+      maxlength="65"
+      :dense="dense"
+    >
+      <template v-if="lang" v-slot:before>
+        <q-icon :name="icon" />
       </template>
-      <template v-else v-slot:prepend>
-        <q-icon name="favorite" />
+      <template v-else v-slot:after>
+        <q-btn round dense flat :icon="icon" />
       </template>
-      <!-- <template v-slot:hint>Field hint</template> -->
     </q-input>
   </div>
 </template>
@@ -17,16 +28,19 @@ import uid from "uuid/v4";
 export default {
   name: "SafaQuasarText",
   props: {
-    padding: {
-      type: Number,
-      default: 7
-    },
-    iconsize: { type: String, default: "24px" },
-    icon: { type: String, default: "none" },
-    color: {
+    m: {
+      // read write
       type: String,
-      default: "white"
+      validator: v => ["r", "e", "ne"].includes(v),
+      default: "r"
     },
+    type: {
+      type: String,
+      default: "text",
+      required: true
+    },
+    value: { type: String, default: "" },
+    label: { default: "", type: String },
     placeholder: {
       type: String,
       default: ""
@@ -34,16 +48,15 @@ export default {
     // rahnameee
     helper: { type: String, default: "شما اینجایی" },
     errorlabel: { type: String, default: "تصحیح شود" },
-    type: {
-      type: String,
-      default: "text",
-      required: true
+    padding: {
+      type: Number,
+      default: 7
     },
-    m: {
-      // read write
+    iconsize: { type: String, default: "24px" },
+    icon: { type: String, default: "add" },
+    color: {
       type: String,
-      validator: v => ["r", "e", "ne"].includes(v),
-      default: "r"
+      default: "blue"
     },
     c: {
       // label
@@ -65,20 +78,26 @@ export default {
           "auto"
         ].includes(v),
       default: "4"
-    },
-    value: { type: String },
-    label: { default: "", type: String }
+    }
   },
   data() {
     return {
-      lang: true,
-      idOfInput: null
+      lang: false,
+      idOfInput: null,
+      text: "",
+      ph: "",
+      dense: false
     };
   },
-  computed() {
-    const generatedId = "S" + "_" + this.uid();
-
-    this.$set(this, "idOfInput", this.idOfInput);
+  methods: {
+    idGenerator() {
+      const generatedId = "S" + "_" + uid();
+      // const generatedId = this.$route.targetUid;
+      return this.$set(this.data, "idOfInput", generatedId);
+    }
+  },
+  watch: {
+    idOfInput: "idGenerator"
   }
 };
 </script>

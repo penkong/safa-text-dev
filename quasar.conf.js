@@ -46,7 +46,7 @@ module.exports = function(ctx) {
                 'QItem',
                 'QItemSection',
                 'QItemLabel',
-                'QInput'
+                'QInput',
             ],
 
             directives: [
