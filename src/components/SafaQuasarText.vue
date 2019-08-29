@@ -14,9 +14,11 @@
       maxlength="65"
       :dense="dense"
       :hint="helper"
+      autogrow
     >
       <template v-slot:after>
         <q-btn
+          v-if="text"
           name="cancel"
           round
           dense
