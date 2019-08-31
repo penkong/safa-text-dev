@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       align: "right",
-      m: "r",
+      m: "e",
       id: "43434",
       type: "text",
       value: "ورود اطلاعات",
@@ -38,8 +38,11 @@ export default {
       placeholder: "ورود اطلاعات",
       helper: "شما اینجایی",
       errorlabel: " الزامی",
+      // not usefull
       padding: 5,
+      // not usefull
       iconsize: "24px",
+      // it must be base on quasar icon name
       icon: "event",
       color: "blue",
       c: "5"

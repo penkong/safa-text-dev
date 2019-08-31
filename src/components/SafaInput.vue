@@ -7,6 +7,8 @@
     </div>
     <div class="input-container">
       <q-input
+        :readonly="read"
+        :disable="notEditable"
         ref="input"
         autogrow
         lazy-rules
@@ -39,7 +41,7 @@
       >
         <template v-if="aligned" v-slot:prepend>
           <q-icon
-            v-if="text"
+            v-if="text && !read && !notEditable"
             round
             dense
             flat
@@ -74,6 +76,8 @@ export default {
   name: "SafaInput",
   data() {
     return {
+      read: null,
+      notEditable: null,
       aligned: null,
       idOfInput: null,
       text: "",
@@ -92,7 +96,7 @@ export default {
       // read write
       type: String,
       validator: v => ["r", "e", "ne"].includes(v),
-      default: "r"
+      default: "e"
     },
     type: {
       type: String,
@@ -147,6 +151,14 @@ export default {
     this.align === "right"
       ? this.$set(this, "aligned", true)
       : this.$set(this, "aligned", false);
+    switch (this.m) {
+      case "r":
+        return this.$set(this, "read", true);
+      case "ne":
+        return this.$set(this, "notEditable", true);
+      default:
+        return;
+    }
   },
   methods: {
     reset() {
