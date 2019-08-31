@@ -28,7 +28,7 @@
         alignItems: center ,
         justifyContent: center
       }"
-        :input-class="{ 'my-special-class': true }"
+        :input-class="{ 'label-aligned': aligned }"
         :color="color"
         :dense="dense"
         :hint="helper"
@@ -37,7 +37,7 @@
         val => val.length >= 3 || 'حداقل 3 کاراکتر'
       ]"
       >
-        <template v-if="lang" v-slot:prepend>
+        <template v-if="aligned" v-slot:prepend>
           <q-icon
             v-if="text"
             round
@@ -170,23 +170,28 @@ export default {
     & .label {
       position: absolute;
       padding: 0 4px;
-      bottom: -1.8rem;
+      bottom: -2rem;
       right: -2.5rem;
     }
     & .left-label {
       position: absolute;
       padding: 0 4px;
-      bottom: -1.8rem;
+      bottom: -2rem;
       left: -2.5rem;
       // background-color: blue;
     }
   }
-}
-.q-field__control .relative-position {
-  // background-color: blue;
-  padding: 0 px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  .input-container {
+    .label-aligned {
+      text-align: right;
+    }
+    .q-field__control .relative-position {
+      // background-color: blue;
+      padding: 0 px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
 </style>
