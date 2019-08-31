@@ -1,30 +1,41 @@
 <template>
   <div class="safa-data">
-    <!-- <q-icon
-      round
-      dense
-      flat
-      name="today"
-      class="text-orange cursor-pointer row"
-      style="font-size: 2em;"
-      @click.prevent
+    <q-field
+      outlined
+      :value="text"
+      bottom-slots
+      label="Label"
+      class="shadow-3 bg-red"
+      stack-label
+      counter
+      maxlength="12"
+      :dense="dense"
     >
-      <date-picker></date-picker>
-    </q-icon>
-    <div class="row">
-      <q-btn
-        no-caps
-        name="today"
-        icon-right="today"
-        class="cursor-pointer"
-        color="teal-8"
-        size="0.8rem"
-      >
-        <q-popup-proxy transition-show="scale" transition-hide="scale">
-          <q-color v-model="colorFace" />
-        </q-popup-proxy>
-      </q-btn>
-    -->
+      <template v-slot:before>
+        <q-icon
+          round
+          name="event"
+          dense
+          flat
+          class="cursor-pointer bg-blue"
+          icon="event"
+          @click.stop
+        >
+          <date-picker appendTo="body" :disabled="readOnly" v-model="date"></date-picker>
+        </q-icon>
+      </template>
+
+      <template v-slot:control>
+        <div class="self-center full-width no-outline" tabindex="0">{{text}}</div>
+      </template>
+
+      <template v-slot:hint>Field hint</template>
+
+      <template v-slot:append>
+        <q-btn round dense flat icon="add" />
+      </template>
+    </q-field>
+    <!-- ///////////////////////////////////////////////////////// -->
     <q-btn
       round
       dense
@@ -43,36 +54,49 @@
 </template>
 
 <script>
-// import VuePersianDatetimePicker from "vue-persian-datetime-picker";
+import VuePersianDatetimePicker from "vue-persian-datetime-picker";
 import uid from "uuid/v4";
 export default {
   name: "SafaDate",
   components: {
-    // DatePicker: VuePersianDatetimePicker
+    DatePicker: VuePersianDatetimePicker
   },
   data() {
     return {
+      text: "",
       loadingGear: false,
       idOfInput: null,
-      date: "1397/02/02",
+      date: Date.now(),
       colorFace: "#B33636",
       model: "one",
       secondModel: "one"
     };
   },
   props: {
-    icon: { type: String },
-    helper: { type: String },
-    errorlabel: { type: String },
-    type: {
+    align: {
       type: String,
-      default: "text"
+      required: true,
+      default: "right",
+      validator: v => ["right", "left"].includes(v)
     },
     m: {
       type: String,
       validator: v => ["r", "e", "ne"].includes(v),
       default: "r"
     },
+    type: {
+      type: String,
+      default: "text"
+    },
+    value: { type: String },
+    label: { default: "none", type: String },
+    icon: {
+      type: String,
+      default: "today",
+      required: true
+    },
+    helper: { type: String, default: "شما اینجایی" },
+    errorlabel: { type: String, default: "تصحیح شود" },
     c: {
       type: String,
       validator: v =>
@@ -92,13 +116,6 @@ export default {
           "auto"
         ].includes(v),
       default: "4"
-    },
-    value: { type: String },
-    label: { default: "none", type: String },
-    id: {
-      default: function() {
-        return "S" + "_" + this._uid;
-      }
     }
   },
   created() {
