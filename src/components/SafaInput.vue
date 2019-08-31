@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- readonly counter -->
-
+    <label :for="idOfInput"></label>
     <q-input
       ref="input"
       autogrow
@@ -12,10 +12,11 @@
       counter
       maxlength="65"
       v-model="text"
-      :input-style="{ padding: padding + 'px' , textAlign: center , marginTop: padding/2 + 'px' }"
-      :input-class="{ 'my-special-class': true }"
       :id="idOfInput"
+      :value="values"
       :type="type"
+      :input-style="{ textAlign: center, height: '10px' }"
+      :input-class="{ 'my-special-class': true }"
       :color="color"
       :dense="dense"
       :hint="helper"
@@ -24,7 +25,6 @@
         val => val.length >= 3 || 'حداقل 3 کاراکتر'
       ]"
     >
-      <!-- <template v-slot:error>Please use maximum 3 characters.</template> -->
       <template v-slot:after>
         <q-btn
           v-if="text"
@@ -43,16 +43,14 @@
 </template>
 
 <script>
-// import uid from "uuid/v4";
-// const generatedId = "S" + "_" + uid();
+import uid from "uuid/v4";
 export default {
-  name: "SafaQuasarText",
+  name: "SafaInput",
   data() {
     return {
       lang: false,
       idOfInput: null,
       text: "",
-      ph: "",
       dense: true
     };
   },
@@ -109,7 +107,11 @@ export default {
       default: "4"
     }
   },
-
+  created() {
+    this.$set(this, "text", this.value);
+    const generatedId = "Safa" + "_" + uid();
+    this.$set(this, "idOfInput", generatedId);
+  },
   methods: {
     reset() {
       this.$refs.input.resetValidation();
@@ -122,7 +124,7 @@ export default {
 </script>
 
 <style lang='scss'>
-.q-field__control-container > textarea {
+.q-field__control .relative-position {
   display: flex;
   align-items: center;
   justify-content: center;

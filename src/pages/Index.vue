@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <SafaQuasarText
+    <SafaInput
       :m="m"
       :type="type"
       :value="value"
@@ -20,18 +20,18 @@
 <style></style>
 
 <script>
-import SafaQuasarText from "../components/SafaQuasarText";
+import SafaInput from "../components/SafaInput";
 export default {
   name: "PageIndex",
   components: {
-    SafaQuasarText
+    SafaInput
   },
   data() {
     return {
       m: "r",
       id: "43434",
       type: "text",
-      value: "",
+      value: "fdfsdfsfs",
       label: "نام",
       placeholder: "ورود اطلاعات",
       helper: "شما اینجایی",
