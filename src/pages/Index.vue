@@ -36,7 +36,7 @@ export default {
       placeholder: "ورود اطلاعات",
       helper: "شما اینجایی",
       errorlabel: "تصحیح شود",
-      padding: 3,
+      padding: 4,
       iconsize: "24px",
       icon: "event",
       color: "blue",

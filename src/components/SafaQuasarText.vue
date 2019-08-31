@@ -1,31 +1,41 @@
 <template>
   <div>
     <!-- readonly counter -->
+
     <q-input
+      ref="input"
+      autogrow
+      lazy-rules
       outlined
       bottom-slots
-      v-model="text"
       standout="bg-lime-1 text-{color}"
-      :id="idOfInput"
-      :type="type"
-      :label="label"
-      :color="color"
       counter
       maxlength="65"
+      v-model="text"
+      :input-style="{ padding: padding + 'px' , textAlign: center , marginTop: padding/2 + 'px' }"
+      :input-class="{ 'my-special-class': true }"
+      :id="idOfInput"
+      :type="type"
+      :color="color"
       :dense="dense"
       :hint="helper"
-      autogrow
+      :rules="[
+        val => !!val  || errorlabel ,
+        val => val.length >= 3 || 'حداقل 3 کاراکتر'
+      ]"
     >
+      <!-- <template v-slot:error>Please use maximum 3 characters.</template> -->
       <template v-slot:after>
         <q-btn
           v-if="text"
-          name="cancel"
           round
           dense
           flat
+          class="cursor-pointer"
+          name="cancel"
           icon="cancel"
           @click.stop="text = null"
-          class="cursor-pointer"
+          @click.prevent="reset"
         />
       </template>
     </q-input>
@@ -33,9 +43,19 @@
 </template>
 
 <script>
-import uid from "uuid/v4";
+// import uid from "uuid/v4";
+// const generatedId = "S" + "_" + uid();
 export default {
   name: "SafaQuasarText",
+  data() {
+    return {
+      lang: false,
+      idOfInput: null,
+      text: "",
+      ph: "",
+      dense: true
+    };
+  },
   props: {
     m: {
       // read write
@@ -89,20 +109,10 @@ export default {
       default: "4"
     }
   },
-  data() {
-    return {
-      lang: false,
-      idOfInput: null,
-      text: "",
-      ph: "",
-      dense: false
-    };
-  },
+
   methods: {
-    idGenerator() {
-      const generatedId = "S" + "_" + uid();
-      // const generatedId = this.$route.targetUid;
-      return this.$set(this.data, "idOfInput", generatedId);
+    reset() {
+      this.$refs.input.resetValidation();
     }
   },
   watch: {
@@ -111,5 +121,10 @@ export default {
 };
 </script>
 
-<style>
+<style lang='scss'>
+.q-field__control-container > textarea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>
