@@ -1,7 +1,8 @@
 <template>
   <div>
     <!-- readonly counter -->
-    <label :for="idOfInput"></label>
+    <label v-if="lang" :for="idOfInput" class="left-label">{{ label }}</label>
+    <label v-else :for="idOfInput" class="label">{{ label }}</label>
     <q-input
       ref="input"
       autogrow
@@ -15,7 +16,15 @@
       :id="idOfInput"
       :value="values"
       :type="type"
-      :input-style="{ textAlign: center, height: '10px' }"
+      :input-style="{
+        textAlign: right,
+        minHeight: '20px',
+        height: '25px' ,
+        padding: padding,
+        display: flex,
+        alignItems: center ,
+        justifyContent: center
+      }"
       :input-class="{ 'my-special-class': true }"
       :color="color"
       :dense="dense"
@@ -25,8 +34,21 @@
         val => val.length >= 3 || 'حداقل 3 کاراکتر'
       ]"
     >
-      <template v-slot:after>
-        <q-btn
+      <template v-if="lang" v-slot:prepend>
+        <q-icon
+          v-if="text"
+          round
+          dense
+          flat
+          class="cursor-pointer"
+          name="cancel"
+          icon="cancel"
+          @click.stop="text = null"
+          @click.prevent="reset"
+        />
+      </template>
+      <template v-else v-slot:append>
+        <q-icon
           v-if="text"
           round
           dense
@@ -124,6 +146,25 @@ export default {
 </script>
 
 <style lang='scss'>
+@import url("http://cdn.font-store.ir/behdad.css");
+* {
+  font-family: "behdad", "Courier New", Courier, monospace;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+.left-label {
+  position: absolute;
+  display: block;
+  top: -2rem;
+  left: 2px;
+}
+.label {
+  position: absolute;
+  display: block;
+  top: -2rem;
+  right: 2px;
+}
 .q-field__control .relative-position {
   display: flex;
   align-items: center;
