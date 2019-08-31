@@ -1,6 +1,7 @@
 <template>
   <q-page class="flex flex-center">
     <SafaInput
+      :align="align"
       :m="m"
       :type="type"
       :value="value"
@@ -28,10 +29,11 @@ export default {
   },
   data() {
     return {
+      align: "right",
       m: "r",
       id: "43434",
       type: "text",
-      value: "",
+      value: "ورود اطلاعات",
       label: "نام",
       placeholder: "ورود اطلاعات",
       helper: "شما اینجایی",

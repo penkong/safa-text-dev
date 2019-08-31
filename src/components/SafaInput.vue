@@ -1,22 +1,25 @@
 <template>
-  <div>
+  <div class="safa-input">
     <!-- readonly counter -->
-    <label v-if="lang" :for="idOfInput" class="left-label">{{ label }}</label>
-    <label v-else :for="idOfInput" class="label">{{ label }}</label>
-    <q-input
-      ref="input"
-      autogrow
-      lazy-rules
-      outlined
-      bottom-slots
-      standout="bg-lime-1 text-{color}"
-      counter
-      maxlength="65"
-      v-model="text"
-      :id="idOfInput"
-      :value="values"
-      :type="type"
-      :input-style="{
+    <div class="label-container">
+      <label v-if="aligned" :for="idOfInput" class="label">{{ label }}</label>
+      <label v-else :for="idOfInput" class="left-label">{{ label }}</label>
+    </div>
+    <div class="input-container">
+      <q-input
+        ref="input"
+        autogrow
+        lazy-rules
+        outlined
+        bottom-slots
+        standout="bg-lime-1 text-{color}"
+        counter
+        maxlength="65"
+        v-model="text"
+        :id="idOfInput"
+        :value="values"
+        :type="type"
+        :input-style="{
         textAlign: right,
         minHeight: '20px',
         height: '25px' ,
@@ -25,42 +28,43 @@
         alignItems: center ,
         justifyContent: center
       }"
-      :input-class="{ 'my-special-class': true }"
-      :color="color"
-      :dense="dense"
-      :hint="helper"
-      :rules="[
+        :input-class="{ 'my-special-class': true }"
+        :color="color"
+        :dense="dense"
+        :hint="helper"
+        :rules="[
         val => !!val  || errorlabel ,
         val => val.length >= 3 || 'حداقل 3 کاراکتر'
       ]"
-    >
-      <template v-if="lang" v-slot:prepend>
-        <q-icon
-          v-if="text"
-          round
-          dense
-          flat
-          class="cursor-pointer"
-          name="cancel"
-          icon="cancel"
-          @click.stop="text = null"
-          @click.prevent="reset"
-        />
-      </template>
-      <template v-else v-slot:append>
-        <q-icon
-          v-if="text"
-          round
-          dense
-          flat
-          class="cursor-pointer"
-          name="cancel"
-          icon="cancel"
-          @click.stop="text = null"
-          @click.prevent="reset"
-        />
-      </template>
-    </q-input>
+      >
+        <template v-if="lang" v-slot:prepend>
+          <q-icon
+            v-if="text"
+            round
+            dense
+            flat
+            class="cursor-pointer"
+            name="cancel"
+            icon="cancel"
+            @click.stop="text = null"
+            @click.prevent="reset"
+          />
+        </template>
+        <template v-else v-slot:append>
+          <q-icon
+            v-if="text"
+            round
+            dense
+            flat
+            class="cursor-pointer"
+            name="cancel"
+            icon="cancel"
+            @click.stop="text = null"
+            @click.prevent="reset"
+          />
+        </template>
+      </q-input>
+    </div>
   </div>
 </template>
 
@@ -70,13 +74,20 @@ export default {
   name: "SafaInput",
   data() {
     return {
-      lang: false,
+      aligned: null,
       idOfInput: null,
       text: "",
       dense: true
     };
   },
   props: {
+    align: {
+      type: String,
+      required: true,
+      default: "right",
+      validator: v => ["right", "left"].includes(v)
+    },
+
     m: {
       // read write
       type: String,
@@ -133,6 +144,9 @@ export default {
     this.$set(this, "text", this.value);
     const generatedId = "Safa" + "_" + uid();
     this.$set(this, "idOfInput", generatedId);
+    this.align === "right"
+      ? this.$set(this, "aligned", true)
+      : this.$set(this, "aligned", false);
   },
   methods: {
     reset() {
@@ -147,25 +161,30 @@ export default {
 
 <style lang='scss'>
 @import url("http://cdn.font-store.ir/behdad.css");
-* {
+.safa-input {
   font-family: "behdad", "Courier New", Courier, monospace;
   padding: 0;
   margin: 0;
-  position: relative;
-}
-.left-label {
-  position: absolute;
-  display: block;
-  top: -2rem;
-  left: 2px;
-}
-.label {
-  position: absolute;
-  display: block;
-  top: -2rem;
-  right: 2px;
+  .label-container {
+    position: relative;
+    & .label {
+      position: absolute;
+      padding: 0 4px;
+      bottom: -1.8rem;
+      right: -2.5rem;
+    }
+    & .left-label {
+      position: absolute;
+      padding: 0 4px;
+      bottom: -1.8rem;
+      left: -2.5rem;
+      // background-color: blue;
+    }
+  }
 }
 .q-field__control .relative-position {
+  // background-color: blue;
+  padding: 0 px;
   display: flex;
   align-items: center;
   justify-content: center;
