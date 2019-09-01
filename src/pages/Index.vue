@@ -10,6 +10,7 @@
       :helper="helper"
       :errorlabel="errorlabel"
       :c="c"
+      @inputer="logger"
     ></SafaDate>
   </q-page>
 </template>
@@ -29,14 +30,20 @@ export default {
       m: "e",
       minDate: "",
       maxDate: "",
+      // for type date or datatime
       type: "text",
-      value: "ورود اطلاعات",
+      value: "1398/01/01",
       label: "زمان قرارداد",
       icon: "today",
       helper: "شما اینجایی",
       errorlabel: " الزامی",
       c: "5"
     };
+  },
+  methods: {
+    logger(val) {
+      console.log(val);
+    }
   }
 };
 </script>

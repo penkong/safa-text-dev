@@ -86,3 +86,27 @@ export default {
 
 <style lang="scss" scoped>
 </style>
+
+
+    <!-- v - else -->
+    <!-- <q-input
+      v-else
+      disable
+      borderless
+      dense
+      bg-color="lime-1"
+      style="display: inline-block; margin-left: 1rem; border: none; padding: 1rem;"
+      id="my-custom-editable-input"
+      type="text"
+      class="form-control is-editable"
+      :placeholder="value"
+      v-model="datetime"
+    >
+      <template v-slot:hint>Field hint</template>
+      <template v-slot:append>
+        <q-item-label
+          style="font-family: 'behdad', 'Courier New', Courier, monospace;"
+          header
+        >{{ label }}</q-item-label>
+      </template>
+    </q-input>-->

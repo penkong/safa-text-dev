@@ -2,55 +2,31 @@
   <div class="safa-data">
     <!-- step 1 -->
     <date-picker
-      v-if="m == 'e'"
-      :editable="true"
-      :disabled="read"
       element="my-custom-editable-input"
-      @close="show=false"
-      v-model="datetime"
+      :editable="read"
+      :disabled="read"
+      :v-model="type"
       :show="show"
-      :min="min"
-      :max="max"
+      :min="minDate"
+      :max="maxDate"
       :highlight="highlight"
-      locale="fa,en"
-      :placeholder="placeholder"
-      :auto-submit="false"
+      :auto-submit="true"
+      @input="handleInput($event)"
+      @close="show=false"
+      locale="fa"
       color="#216583"
       inputFormat="YYYY-MM-DD HH:mm"
       format="jYYYY - jMM - jDD  --  HH:mm"
       type="datetime"
       appendTo="body"
-      @input="datetime=$event"
-      inputClass="form-control my-custom-class-name"
-      input-class="form-control form-control-lg"
-    />
-    <date-picker
-      v-else
-      :editable="false"
-      :disabled="read"
-      element="my-custom-editable-input"
-      @close="show=false"
-      v-model="datetime"
-      :show="show"
-      :min="min"
-      :max="max"
-      :highlight="highlight"
-      locale="fa,en"
-      :placeholder="placeholder"
-      :auto-submit="false"
-      color="#216583"
-      inputFormat="YYYY-MM-DD HH:mm"
-      format="jYYYY - jMM - jDD  --  HH:mm"
-      type="datetime"
-      appendTo="body"
-      @input="datetime=$event"
-      inputClass="form-control my-custom-class-name"
+      inputClass="form-control"
     />
     <!-- step 2 -->
     <q-btn
+      :loading="loadingGear"
+      :disabled="read"
       @click="show=true"
       @click.prevent="simulateProgress"
-      :loading="loadingGear"
       round
       dense
       type="button"
@@ -65,49 +41,24 @@
     </q-btn>
     <!-- step 3 -->
     <q-input
-      v-if="m == 'e'"
+      :disable="read"
+      :placeholder="value"
+      :hint="hinter()"
+      v-model="datetime"
       borderless
       dense
       bg-color="lime-1"
-      style="display: inline-block; margin-left: 1rem; border: none; padding: 1rem;"
       id="my-custom-editable-input"
       type="text"
-      class="form-control is-editable"
-      placeholder
-      v-model="datetime"
-      :hint="helper"
+      class="form-control is-editable for-input"
     >
-      <template v-slot:hint>Field hint</template>
+      <template v-slot:hint>field hint</template>
       <template v-slot:append>
         <q-item-label
           style="font-family: 'behdad', 'Courier New', Courier, monospace;"
           header
         >{{ label }}</q-item-label>
       </template>
-      <!-- <template v-slot:after></template> -->
-    </q-input>
-    <q-input
-      v-else
-      disable="true"
-      borderless
-      dense
-      bg-color="lime-1"
-      style="display: inline-block; margin-left: 1rem; border: none; padding: 1rem;"
-      id="my-custom-editable-input"
-      type="text"
-      class="form-control is-editable"
-      placeholder
-      v-model="datetime"
-      :hint="helper"
-    >
-      <template v-slot:hint>Field hint</template>
-      <template v-slot:append>
-        <q-item-label
-          style="font-family: 'behdad', 'Courier New', Courier, monospace;"
-          header
-        >{{ label }}</q-item-label>
-      </template>
-      <!-- <template v-slot:after></template> -->
     </q-input>
   </div>
 </template>
@@ -122,19 +73,18 @@ export default {
   },
   data() {
     return {
+      idOfInput: null,
       date: "",
+      datetime: "",
+      initHelper: null,
+      //
       show: false,
+      loadingGear: false,
+      //
       read: null,
       notEditable: null,
-      placeholder: "",
-      text: "",
-      loadingGear: false,
-      idOfInput: null,
-      datetime: "",
-      colorFace: "#B33636",
-      model: "one",
-      dense: true,
-      secondModel: "one"
+      //
+      dense: true
     };
   },
   props: {
@@ -151,17 +101,16 @@ export default {
     },
     minDate: {
       type: String,
-      default: "",
-      validator: () => {}
+      default: ""
     },
     maxDate: {
       type: String,
-      default: "",
-      validator: () => {}
+      default: ""
     },
     type: {
       type: String,
-      default: "text"
+      required: true,
+      default: "datetime"
     },
     value: { type: String },
     label: { default: "none", type: String },
@@ -205,8 +154,18 @@ export default {
         return;
     }
   },
-  computed: {},
   methods: {
+    hinter() {
+      if (this.read) {
+        return this.$set(this, "initHelper", null);
+      } else {
+        return this.$set(this, "initHelper", this.helper);
+      }
+    },
+    handleInput($event) {
+      this.$set(this, "datetime", $event);
+      return this.$emit("inputer", this.datetime);
+    },
     simulateProgress() {
       // we set loading state
       this.loadingGear = true;
@@ -230,6 +189,10 @@ export default {
 
 <style lang="scss" scoped>
 @import url("http://cdn.font-store.ir/behdad.css");
-.safa-data {
+.for-input {
+  display: inline-block;
+  border: none;
+  padding: 0.75rem;
+  width: 90%;
 }
 </style>
