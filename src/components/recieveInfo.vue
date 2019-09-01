@@ -1,6 +1,20 @@
 <template>
   <div>
     <input type="text" />
+    <q-btn
+      round
+      dense
+      size="0.8rem"
+      :loading="loadingGear"
+      @click.prevent="simulateProgress"
+      color="light-blue-13"
+      text-color="white"
+      icon="today"
+    >
+      <template v-slot:loading>
+        <q-spinner-gears />
+      </template>
+    </q-btn>
   </div>
 </template>
 

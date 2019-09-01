@@ -1,6 +1,16 @@
 <template>
   <q-page class="flex flex-center">
-    <SafaDate></SafaDate>
+    <SafaDate
+      :align="align"
+      :m="m"
+      :type="type"
+      :value="value"
+      :label="label"
+      :icon="icon"
+      :helper="helper"
+      :errorlabel="errorlabel"
+      :c="c"
+    ></SafaDate>
   </q-page>
 </template>
 
@@ -15,19 +25,15 @@ export default {
   },
   data() {
     return {
+      align: "right",
+      m: "e",
+      type: "text",
+      value: "ورود اطلاعات",
+      label: "نام",
       icon: "today",
       helper: "شما اینجایی",
       errorlabel: " الزامی",
-      type: "text",
-      m: "e",
-      c: "5",
-      value: "ورود اطلاعات",
-      label: "نام",
-      id: {
-        default: function() {
-          return "S" + "_" + this._uid;
-        }
-      }
+      c: "5"
     };
   }
 };

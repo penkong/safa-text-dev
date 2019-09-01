@@ -21,7 +21,8 @@
           icon="event"
           @click.stop
         >
-          <date-picker appendTo="body" :disabled="readOnly" v-model="date"></date-picker>
+          <!-- <date-picker v-model="datetime" type="datetime" /> -->
+          <date-picker appendTo="body" :disabled="readOnly" v-model="datetime" type="datetime"></date-picker>
         </q-icon>
       </template>
 
@@ -35,21 +36,6 @@
         <q-btn round dense flat icon="add" />
       </template>
     </q-field>
-    <!-- ///////////////////////////////////////////////////////// -->
-    <q-btn
-      round
-      dense
-      size="0.8rem"
-      :loading="loadingGear"
-      @click.prevent="simulateProgress"
-      color="light-blue-13"
-      text-color="white"
-      icon="today"
-    >
-      <template v-slot:loading>
-        <q-spinner-gears />
-      </template>
-    </q-btn>
   </div>
 </template>
 
@@ -66,7 +52,7 @@ export default {
       text: "",
       loadingGear: false,
       idOfInput: null,
-      date: Date.now(),
+      date: "",
       colorFace: "#B33636",
       model: "one",
       secondModel: "one"
@@ -121,6 +107,15 @@ export default {
   created() {
     const generatedId = "Safa" + "_" + uid();
     this.$set(this, "idOfInput", generatedId);
+  },
+  computed: {
+    readOnly: function() {
+      if (this.m === "e") {
+        return false;
+      } else {
+        return true;
+      }
+    }
   },
   methods: {
     simulateProgress() {
