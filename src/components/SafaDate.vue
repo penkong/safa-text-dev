@@ -1,6 +1,6 @@
 <template>
   <div class="safa-data">
-    <q-field outlined :hint="helper" :value="text" bottom-slots stack-label :dense="dense">
+    <!-- <q-field outlined :hint="helper" :value="text" bottom-slots stack-label :dense="dense">
       <date-picker
         v-if="m == 'e'"
         :editable="true"
@@ -47,17 +47,22 @@
     </q-field>
     <br />
     <br />
-    <br />
+    <br />-->
     <!-- //////////////////////////////////////////////////////////// -->
+    <q-item-label
+      style="margin-left: 1.5rem; inline-block; margin-left: 1rem; font-family: 'behdad', 'Courier New', Courier, monospace;"
+      header
+    >{{ label }}</q-item-label>
+
     <q-btn
       @click="show=true"
+      @click.prevent="simulateProgress"
+      :loading="loadingGear"
       round
       dense
       type="button"
       size="0.8rem"
-      :loading="loadingGear"
-      @click.prevent="simulateProgress"
-      color="light-blue-13"
+      color="light-blue-14"
       text-color="white"
       icon="today"
     >
@@ -67,24 +72,66 @@
     </q-btn>
     <q-input
       id="my-custom-editable-input"
+      style="display: inline-block; margin-left: 1rem; border: none;"
       type="text"
       class="form-control is-editable"
-      placeholder="YYYY/MM/DD"
-      v-model="date"
+      placeholder
+      v-model="datetime"
+    >
+      <!-- <template v-slot:after></template> -->
+    </q-input>
+    <date-picker
+      :highlight="highlight"
+      locale="fa,en"
+      :auto-submit="true"
+      input-class="form-control form-control-lg"
+      v-if="m == 'e'"
+      :editable="true"
+      element="my-custom-editable-input"
+      @close="show=false"
+      v-model="datetime"
+      :show="show"
+      style="border: none;"
+      :min="min"
+      :max="max"
+      :disabled="read"
+      :placeholder="placeholder"
+      @input="datetime=$event"
+      color="teal"
+      inputFormat="YYYY-MM-DD HH:mm"
+      format="jYYYY - jMM - jDD  --  HH:mm"
+      type="datetime"
+      inputClass="form-control my-custom-class-name"
+      appendTo="body"
+      autoSubmit="false"
     />
     <date-picker
+      v-else
+      :editable="false"
       element="my-custom-editable-input"
-      v-model="date"
-      format="jYYYY/jMM/jDD"
-      :editable="true"
-      :show="show"
       @close="show=false"
+      v-model="datetime"
+      :show="show"
+      style="margin-top: 0.3rem;"
+      :min="min"
+      :max="max"
+      :disabled="read"
+      :placeholder="placeholder"
+      @input="datetime=$event"
+      color="teal"
+      inputFormat="YYYY-MM-DD HH:mm"
+      format="jYYYY - jMM - jDD  --  HH:mm"
+      type="datetime"
+      inputClass="form-control my-custom-class-name"
+      appendTo="body"
+      autoSubmit="false"
     />
+
     <br />
     <br />
     <br />
     <!-- //////////////////////////////////////////////////////////// -->
-    <q-field outlined :hint="helper" :value="text" bottom-slots stack-label :dense="dense">
+    <!-- <q-field outlined :hint="helper" :value="text" bottom-slots stack-label :dense="dense">
       <date-picker
         v-if="m == 'e'"
         :editable="true"
@@ -128,7 +175,7 @@
           header
         >{{ label }}</q-item-label>
       </template>
-    </q-field>
+    </q-field>-->
   </div>
 </template>
   <!-- <date-picker v-model="datetime" type="datetime" /> -->
@@ -250,6 +297,9 @@ export default {
         // we're done, we reset loading state
         this.loadingGear = false;
       }, 500);
+    },
+    highlight() {
+      return { style: { color: "grey-3" } };
     }
   }
 };
