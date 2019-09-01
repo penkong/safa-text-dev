@@ -1,5 +1,52 @@
 <template>
   <div class="safa-data">
+    <!-- step 1 -->
+    <date-picker
+      v-if="m == 'e'"
+      :editable="true"
+      :disabled="read"
+      element="my-custom-editable-input"
+      @close="show=false"
+      v-model="datetime"
+      :show="show"
+      :min="min"
+      :max="max"
+      :highlight="highlight"
+      locale="fa,en"
+      :placeholder="placeholder"
+      :auto-submit="false"
+      color="#216583"
+      inputFormat="YYYY-MM-DD HH:mm"
+      format="jYYYY - jMM - jDD  --  HH:mm"
+      type="datetime"
+      appendTo="body"
+      @input="datetime=$event"
+      inputClass="form-control my-custom-class-name"
+      input-class="form-control form-control-lg"
+    />
+    <date-picker
+      v-else
+      :editable="false"
+      :disabled="read"
+      element="my-custom-editable-input"
+      @close="show=false"
+      v-model="datetime"
+      :show="show"
+      :min="min"
+      :max="max"
+      :highlight="highlight"
+      locale="fa,en"
+      :placeholder="placeholder"
+      :auto-submit="false"
+      color="#216583"
+      inputFormat="YYYY-MM-DD HH:mm"
+      format="jYYYY - jMM - jDD  --  HH:mm"
+      type="datetime"
+      appendTo="body"
+      @input="datetime=$event"
+      inputClass="form-control my-custom-class-name"
+    />
+    <!-- step 2 -->
     <q-btn
       @click="show=true"
       @click.prevent="simulateProgress"
@@ -8,7 +55,7 @@
       dense
       type="button"
       size="0.8rem"
-      color="light-blue-14"
+      color="light-blue-9"
       text-color="white"
       icon="today"
     >
@@ -16,9 +63,11 @@
         <q-spinner-gears />
       </template>
     </q-btn>
+    <!-- step 3 -->
     <q-input
+      v-if="m == 'e'"
       borderless
-      dense="true"
+      dense
       bg-color="lime-1"
       style="display: inline-block; margin-left: 1rem; border: none; padding: 1rem;"
       id="my-custom-editable-input"
@@ -37,52 +86,29 @@
       </template>
       <!-- <template v-slot:after></template> -->
     </q-input>
-    <date-picker
-      input-class="form-control form-control-lg"
-      :highlight="highlight"
-      locale="fa,en"
-      :auto-submit="true"
-      v-if="m == 'e'"
-      :editable="true"
-      element="my-custom-editable-input"
-      @close="show=false"
-      v-model="datetime"
-      :show="show"
-      style="border: none; padding-left: 1rem;"
-      :min="min"
-      :max="max"
-      :disabled="read"
-      :placeholder="placeholder"
-      @input="datetime=$event"
-      color="teal"
-      inputFormat="YYYY-MM-DD HH:mm"
-      format="jYYYY - jMM - jDD  --  HH:mm"
-      type="datetime"
-      inputClass="form-control my-custom-class-name"
-      appendTo="body"
-      autoSubmit="false"
-    />
-    <date-picker
+    <q-input
       v-else
-      :editable="false"
-      element="my-custom-editable-input"
-      @close="show=false"
+      disable="true"
+      borderless
+      dense
+      bg-color="lime-1"
+      style="display: inline-block; margin-left: 1rem; border: none; padding: 1rem;"
+      id="my-custom-editable-input"
+      type="text"
+      class="form-control is-editable"
+      placeholder
       v-model="datetime"
-      :show="show"
-      style="margin-top: 0.3rem;"
-      :min="min"
-      :max="max"
-      :disabled="read"
-      :placeholder="placeholder"
-      @input="datetime=$event"
-      color="teal"
-      inputFormat="YYYY-MM-DD HH:mm"
-      format="jYYYY - jMM - jDD  --  HH:mm"
-      type="datetime"
-      inputClass="form-control my-custom-class-name"
-      appendTo="body"
-      autoSubmit="false"
-    />
+      :hint="helper"
+    >
+      <template v-slot:hint>Field hint</template>
+      <template v-slot:append>
+        <q-item-label
+          style="font-family: 'behdad', 'Courier New', Courier, monospace;"
+          header
+        >{{ label }}</q-item-label>
+      </template>
+      <!-- <template v-slot:after></template> -->
+    </q-input>
   </div>
 </template>
 
@@ -191,7 +217,12 @@ export default {
       }, 500);
     },
     highlight() {
-      return { style: { color: "grey-3" } };
+      return {
+        style: {
+          color: "grey-3",
+          "font-family": "'behdad' ,'Courier New' ,'Courier', 'monospace'"
+        }
+      };
     }
   }
 };
@@ -199,7 +230,6 @@ export default {
 
 <style lang="scss" scoped>
 @import url("http://cdn.font-store.ir/behdad.css");
-
 .safa-data {
 }
 </style>
