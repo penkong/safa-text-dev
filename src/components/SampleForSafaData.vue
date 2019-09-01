@@ -1,17 +1,28 @@
 <template>
   <q-page class="flex flex-center">
-    <SafaCheckBox />
+    <SafaDate
+      :align="align"
+      :m="m"
+      :type="type"
+      :value="value"
+      :label="label"
+      :icon="icon"
+      :helper="helper"
+      :errorlabel="errorlabel"
+      :c="c"
+      @inputer="logger"
+    ></SafaDate>
   </q-page>
 </template>
 
 <style></style>
 
 <script>
-import SafaCheckBox from "../components/SafaCheckBox";
+import SafaDate from "../components/SafaDate";
 export default {
   name: "PageIndex",
   components: {
-    SafaCheckBox
+    SafaDate
   },
   data() {
     return {
@@ -29,6 +40,10 @@ export default {
       c: "5"
     };
   },
-  methods: {}
+  methods: {
+    logger(val) {
+      console.log(val);
+    }
+  }
 };
 </script>
