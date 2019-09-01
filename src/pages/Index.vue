@@ -1,6 +1,16 @@
 <template>
   <q-page class="flex flex-center">
-    <SafaCheckBox />
+    <SafaCheckBox
+      :align="align"
+      :icon="icon"
+      :helper="helper"
+      :errorlabel="errorlabel"
+      :m="m"
+      :c="c"
+      :value="value"
+      :label="label"
+      @checked="checkInfo"
+    />
   </q-page>
 </template>
 
@@ -17,11 +27,7 @@ export default {
     return {
       align: "right",
       m: "e",
-      minDate: "",
-      maxDate: "",
-      // for type date or datatime
-      type: "text",
-      value: "1398/01/01",
+      value: "false",
       label: "زمان قرارداد",
       icon: "today",
       helper: "شما اینجایی",
@@ -29,6 +35,10 @@ export default {
       c: "5"
     };
   },
-  methods: {}
+  methods: {
+    checkInfo(val) {
+      console.log(val);
+    }
+  }
 };
 </script>
