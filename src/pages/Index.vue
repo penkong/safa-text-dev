@@ -27,9 +27,11 @@ export default {
     return {
       align: "right",
       m: "e",
+      minDate: "",
+      maxDate: "",
       type: "text",
       value: "ورود اطلاعات",
-      label: "نام",
+      label: "زمان قرارداد",
       icon: "today",
       helper: "شما اینجایی",
       errorlabel: " الزامی",

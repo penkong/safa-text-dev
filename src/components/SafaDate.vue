@@ -1,34 +1,47 @@
 <template>
   <div class="safa-data">
+    <!-- label="Label" -->
     <q-field
       outlined
+      :hint="helper"
       :value="text"
       bottom-slots
-      label="Label"
-      class="shadow-3 bg-red"
       stack-label
-      counter
-      maxlength="12"
       :dense="dense"
+      :rules="[
+        val => !!val  || errorlabel ,
+        val => val.length >= 3 || 'حداقل 3 کاراکتر'
+      ]"
     >
-      <template v-slot:before>
-        <q-icon
-          round
-          name="event"
-          dense
-          flat
-          class="cursor-pointer bg-blue"
-          icon="event"
-          @click.stop
-        >
-          <!-- <date-picker v-model="datetime" type="datetime" /> -->
-          <date-picker appendTo="body" :disabled="readOnly" v-model="datetime" type="datetime"></date-picker>
-        </q-icon>
-      </template>
+      <!-- <date-picker v-model="datetime" type="datetime" /> -->
+      <!--
+          display-format="dddd jDD jMMMM jYYYY"
+        format="jYYYY/jMM/jDD"
+      altFormat="YYYY-MM-DD HH:mm"-->
+      <date-picker
+        style="margin-top: 0.3rem;"
+        :min="min"
+        :max="max"
+        :disabled="read"
+        :placeholder="label"
+        @input="datetime=$event"
+        color="teal"
+        inputFormat="YYYY-MM-DD HH:mm"
+        v-model="datetime"
+        type="datetime"
+        editable="false"
+        inputClass="form-control my-custom-class-name"
+        appendTo="body"
+        autoSubmit="false"
+      >
+        <template v-slot:before>
+          <q-icon round name="event" dense flat class="cursor-pointer" icon="event" @click.stop></q-icon>
+        </template>
+      </date-picker>
 
-      <template v-slot:control>
+      <!-- <template v-slot:control>
         <div class="self-center full-width no-outline" tabindex="0">{{text}}</div>
-      </template>
+      </template>-->
 
       <template v-slot:hint>Field hint</template>
 
@@ -49,12 +62,15 @@ export default {
   },
   data() {
     return {
+      read: null,
+      notEditable: null,
       text: "",
       loadingGear: false,
       idOfInput: null,
-      date: "",
+      datetime: "",
       colorFace: "#B33636",
       model: "one",
+      dense: true,
       secondModel: "one"
     };
   },
@@ -69,6 +85,16 @@ export default {
       type: String,
       validator: v => ["r", "e", "ne"].includes(v),
       default: "r"
+    },
+    minDate: {
+      type: String,
+      default: "",
+      validator: () => {}
+    },
+    maxDate: {
+      type: String,
+      default: "",
+      validator: () => {}
     },
     type: {
       type: String,
@@ -107,16 +133,16 @@ export default {
   created() {
     const generatedId = "Safa" + "_" + uid();
     this.$set(this, "idOfInput", generatedId);
-  },
-  computed: {
-    readOnly: function() {
-      if (this.m === "e") {
-        return false;
-      } else {
-        return true;
-      }
+    switch (this.m) {
+      case "r":
+        return this.$set(this, "read", true);
+      case "ne":
+        return this.$set(this, "notEditable", true);
+      default:
+        return;
     }
   },
+  computed: {},
   methods: {
     simulateProgress() {
       // we set loading state
