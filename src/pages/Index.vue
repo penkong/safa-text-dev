@@ -1,40 +1,46 @@
 <template>
   <q-page class="flex flex-center">
-    <SafaCommentBox
+    <SafaDropDown
+      :m="m"
+      :c="c"
       :align="align"
       :height="height"
       :width="width"
-      :m="m"
-      :c="c"
       :value="value"
       :label="label"
       :dense="dense"
       :placeholder="placeholder"
-      :maxLength="maxLength"
+      :items="items"
+      :DtoName="DtoName"
+      :Domain="Domain"
+      :HideValue="HideValue"
       @inputer="checkInfo"
     />
   </q-page>
 </template>
 
 <script>
-import SafaCommentBox from "../components/SafaCommentBox";
+import SafaDropDown from "../components/SafaDropDown";
 export default {
   name: "PageIndex",
   components: {
-    SafaCommentBox
+    SafaDropDown
   },
   data() {
     return {
+      m: "e",
+      c: "5",
       align: "right",
       width: "400px",
       height: "200px",
-      maxLength: 400,
-      m: "e",
-      c: "5",
-      placeholder: "را بنویسید",
       value: "",
       label: " نظرات",
-      dense: true
+      dense: true,
+      placeholder: "را بنویسید",
+      items: [],
+      DtoName: "",
+      Domain: "",
+      HideValue: true
     };
   },
   methods: {
