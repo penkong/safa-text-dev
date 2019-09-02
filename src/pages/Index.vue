@@ -7,15 +7,14 @@
       :m="m"
       :c="c"
       :value="value"
-      :rows="rows"
       :label="label"
       :dense="dense"
       :placeholder="placeholder"
+      :maxLength="maxLength"
+      @inputer="checkInfo"
     />
   </q-page>
 </template>
-
-<style></style>
 
 <script>
 import SafaCommentBox from "../components/SafaCommentBox";
@@ -27,13 +26,13 @@ export default {
   data() {
     return {
       align: "right",
-      width: "200px",
+      width: "400px",
       height: "200px",
+      maxLength: 400,
       m: "e",
-      c: "8",
-      placeholder: "",
-      value: "بنویسید",
-      rows: 10,
+      c: "5",
+      placeholder: "را بنویسید",
+      value: "",
       label: " نظرات",
       dense: true
     };

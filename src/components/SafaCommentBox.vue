@@ -1,7 +1,7 @@
 <template>
-  <div class="safa-commentrow relative-position" style="padding:7px;">
-    <div class="label-container">
-      <label v-if="aligned" :for="idOfInput" class="label" :style="{ right: -c + 'rem'}">{{ label }}</label>
+  <div class="safa-comment">
+    <div v-if="label" class="label-container">
+      <label v-if="aligned" :for="idOfInput" class="label" :style="{right: -c + 'rem'}">{{ label }}</label>
       <label v-else :for="idOfInput" class="left-label" :style="{ left: -c + 'rem'}">{{ label }}</label>
     </div>
     <div class="input-container">
@@ -9,19 +9,21 @@
         :readonly="read"
         :disable="notEditable"
         :id="idOfInput"
-        ref="input"
-        autogrow
+        :value="value"
+        :placeholder="placeholder"
+        :input-style="cssProps"
+        @input="handleInput($event)"
         lazy-rules
+        type="textarea"
+        ref="textArea"
+        autogrow
         outlined
         bottom-slots
         standout="bg-lime-1"
         counter
-        maxlength="1200"
+        :maxlength="maxLength"
         v-model="text"
-        :value="value"
-        :placeholder="placeholder"
-        type="textarea"
-        :input-style="cssProps"
+        debounce="20"
       ></q-input>
     </div>
   </div>
@@ -37,7 +39,6 @@ export default {
       notEditable: null,
       aligned: null,
       text: "",
-      dense: true,
       idOfInput: null
     };
   },
@@ -45,6 +46,10 @@ export default {
     placeholder: {
       type: String,
       default: "سیب"
+    },
+    maxLength: {
+      type: Number,
+      default: 1200
     },
     align: {
       type: String,
@@ -94,12 +99,6 @@ export default {
         return "";
       }
     },
-    rows: {
-      type: Number,
-      default: function() {
-        return 6;
-      }
-    },
     label: {
       type: String,
       default: function() {
@@ -127,23 +126,25 @@ export default {
     cssProps() {
       if (this.align === "right") {
         return {
-          textAlign: "right",
+          direction: "rtl",
           minHeight: this.height,
           minWidth: this.width,
           padding: "padding",
-          fontSize: "0.85rem",
-          fontFamily: '"behdad", "Courier New", Courier, monospace'
+          fontSize: "0.80rem"
         };
       } else {
         return {
-          textAlign: "left",
           minHeight: this.height,
           minWidth: this.width,
           padding: "padding",
-          fontSize: "0.85rem",
-          fontFamily: '"behdad", "Courier New", Courier, monospace'
+          fontSize: "0.80rem"
         };
       }
+    }
+  },
+  methods: {
+    handleInput($event) {
+      this.$emit("inputer", $event);
     }
   }
 };
@@ -152,32 +153,25 @@ export default {
 <style lang="scss" scoped>
 @import url("http://cdn.font-store.ir/behdad.css");
 .safa-comment {
-  padding: 0;
-  margin: 0;
   font-family: "behdad", "Courier New", Courier, monospace;
+  padding: 0;
   margin: 0;
   .label-container {
     position: relative;
     & .label {
       position: absolute;
       padding: 0 4px;
-      bottom: -2rem;
+      bottom: -2.4rem;
     }
     & .left-label {
       position: absolute;
       padding: 0 4px;
-      bottom: -2rem;
+      bottom: -2.4rem;
     }
   }
   .input-container {
     .label-aligned {
       text-align: right;
-    }
-    .q-field__control .relative-position {
-      padding: 0 px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
   }
 }
