@@ -1,6 +1,17 @@
 <template>
   <q-page class="flex flex-center">
-    <SafaCommentBox :m="m" :c="c" :value="value" :rows="rows" :label="label" :dense="dense" />
+    <SafaCommentBox
+      :align="align"
+      :height="height"
+      :width="width"
+      :m="m"
+      :c="c"
+      :value="value"
+      :rows="rows"
+      :label="label"
+      :dense="dense"
+      :placeholder="placeholder"
+    />
   </q-page>
 </template>
 
@@ -15,11 +26,15 @@ export default {
   },
   data() {
     return {
+      align: "right",
+      width: "200px",
+      height: "200px",
       m: "e",
-      c: "12",
-      value: "false",
-      rows: "10",
-      label: "زمان قرارداد",
+      c: "8",
+      placeholder: "",
+      value: "بنویسید",
+      rows: 10,
+      label: " نظرات",
       dense: true
     };
   },
