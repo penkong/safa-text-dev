@@ -9,6 +9,8 @@
       :c="c"
       :value="value"
       :label="label"
+      :color="color"
+      :dense="dense"
       @checked="checkInfo"
     />
   </q-page>
@@ -29,10 +31,12 @@ export default {
       m: "e",
       value: "false",
       label: "زمان قرارداد",
-      icon: "today",
+      icon: "",
       helper: "شما اینجایی",
       errorlabel: " الزامی",
-      c: "5"
+      c: "4",
+      color: "light-blue-10",
+      dense: false
     };
   },
   methods: {

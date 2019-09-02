@@ -1,27 +1,26 @@
 <template>
-  <div class="row relative-position" style="padding:7px;">
-    <div v-if="aligned" class="q-gutter-sm">
+  <div class="row relative-position">
+    <div class="sl q-ml-{c}">
+      <q-icon
+        round
+        dense
+        flat
+        class="cursor-pointer"
+        :name="icon"
+        :icon="icon"
+        :style="{'margin-right': c + 'px'}"
+      />
       <q-checkbox
         :disable="read || notEditable"
-        left-label
-        v-model="dataVal"
         :label="label"
-        true-value="yes"
-        false-value="no"
+        :color="color"
         @input="handleInput($event)"
-        color="blue-grey-9"
-      />
-    </div>
-    <div v-else class="q-gutter-sm">
-      <q-checkbox
-        :disable="read || notEditable"
+        :left-label="aligned"
         v-model="dataVal"
-        :label="label"
-        true-value="yes"
-        false-value="no"
-        @input="handleInput($event)"
-        color="blue-grey-9"
-      />
+        keep-color
+        :dense="dense"
+        tabindex="30"
+      ></q-checkbox>
     </div>
   </div>
 </template>
@@ -61,6 +60,14 @@ export default {
       type: String,
       default: "today",
       required: true
+    },
+    color: {
+      type: String,
+      default: "light-blue-10"
+    },
+    dense: {
+      type: Boolean,
+      default: false
     },
     helper: { type: String, default: "شما اینجایی" },
     errorlabel: { type: String, default: "تصحیح شود" },
@@ -108,6 +115,13 @@ export default {
   }
 };
 </script>
-
 <style lang="scss" scoped>
+@import url("http://cdn.font-store.ir/behdad.css");
+div {
+  .sl {
+    font-family: "behdad", "Courier New", "Courier", "monospace";
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
 </style>
