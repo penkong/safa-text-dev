@@ -1,42 +1,26 @@
 <template>
   <q-page class="flex flex-center">
-    <SafaCheckBox
-      :align="align"
-      :icon="icon"
-      :helper="helper"
-      :errorlabel="errorlabel"
-      :m="m"
-      :c="c"
-      :value="value"
-      :label="label"
-      :color="color"
-      :dense="dense"
-      @checked="checkInfo"
-    />
+    <SafaCommentBox :m="m" :c="c" :value="value" :rows="rows" :label="label" :dense="dense" />
   </q-page>
 </template>
 
 <style></style>
 
 <script>
-import SafaCheckBox from "../components/SafaCheckBox";
+import SafaCommentBox from "../components/SafaCommentBox";
 export default {
   name: "PageIndex",
   components: {
-    SafaCheckBox
+    SafaCommentBox
   },
   data() {
     return {
-      align: "right",
       m: "e",
+      c: "12",
       value: "false",
+      rows: "10",
       label: "زمان قرارداد",
-      icon: "",
-      helper: "شما اینجایی",
-      errorlabel: " الزامی",
-      c: "4",
-      color: "light-blue-10",
-      dense: false
+      dense: true
     };
   },
   methods: {

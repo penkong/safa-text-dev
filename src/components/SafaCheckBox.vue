@@ -26,6 +26,7 @@
 </template>
 
 <script>
+// https://codepen.io/smolinari/pen/BaBwaZO?editors=1010
 import uid from "uuid/v4";
 export default {
   name: "SafaCheckBox",

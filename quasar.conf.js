@@ -49,7 +49,11 @@ module.exports = function(ctx) {
                 'QInput',
                 'QSpinnerGears',
                 'QField',
-                'QCheckbox'
+                'QCheckbox',
+                'QTable',
+                'QTh',
+                'QTr',
+                'QTd'
             ],
 
             directives: [
