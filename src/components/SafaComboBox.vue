@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="row relative-position" style="padding:7px;">
-      <label v-if="label !=='none'" :class="[`col-md-${c}`,'col-xs-12' ,'safa-label']">{{label}}</label>
+      <!-- <label v-if="label !=='none'" :class="[`col-md-${c}`,'col-xs-12' ,'safa-label']">{{label}}</label> -->
       <input
         v-if="!HideValue"
         :readonly="readOnly"
-        :style="{ backgroundColor: activeColor }"
+        :style="{ backgroundColor: 'red' }"
         class="safa-Combo safa-text-combo"
         v-bind:value="value"
         v-on:input="$emit('input', $event.target.value)"
@@ -34,12 +34,26 @@
         </option>
       </select>
     </div>
+    <dropdown :options="arrayOfObjects" :selected="object" v-on:updateOption="methodToRunOnSelect"></dropdown>
   </div>
 </template>
 
 <script>
+import dropdown from "vue-dropdowns";
 export default {
   name: "SafaDropDown",
+  data() {
+    return {
+      arrayOfObjects: [1, 2, 4, 5],
+      object: {
+        name: "Object Name"
+      }
+    };
+  },
+
+  components: {
+    dropdown: dropdown
+  },
   props: {
     m: {
       type: String,
@@ -126,6 +140,11 @@ export default {
       default: function() {
         return false;
       }
+    }
+  },
+  methods: {
+    methodToRunOnSelect(payload) {
+      this.object = payload;
     }
   }
 };
