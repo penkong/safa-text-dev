@@ -1,37 +1,46 @@
 <template>
-  <div>
-    <div
-      class="row relative-position"
-      :style="{minHeigh: height, marginTop: '10px' }"
-      style=" display: flex;
+  <div
+    class="row safa-combo-box relative-position"
+    :style="{minHeigh: height, marginTop: '10px' }"
+    style=" display: flex;
         align-items: center ;
         justify-content: center;"
-    >
-      <Vselect :style="{minWidth: width }" :options="items"></Vselect>
-      <div
-        class="sls"
-        style="
+  >
+    <div v-if="label" class="label-container">
+      <label v-if="aligned" :for="idOfInput" class="label" :style="{right: -c + 'rem'}">{{ label }}</label>
+      <label v-else :for="idOfInput" class="left-label" :style="{ left: -c + 'rem'}">{{ label }}</label>
+    </div>
+    <Vselect
+      class="style-chooser"
+      :placeholder="placeholder"
+      :style="{minWidth: width }"
+      :options="items"
+    ></Vselect>
+    <div
+      class="sls"
+      style="
         margin: 0;
         padding: 0;
         margin-left: 5px;
-        width: 60px;"
-      >
-        <q-input
-          :readonly="read"
-          :disable="notEditable"
-          :id="idOfInput"
-          :value="value"
-          dense="false"
-          v-model.number="model"
-          type="text"
-          filled
-          style="max-height: 10px"
-          outlined
-          @input="handleInput($event)"
-          lazy-rules
-          v-model="text"
-        ></q-input>
-      </div>
+        width: 70px;"
+    >
+      <q-input
+        :readonly="read"
+        :disable="notEditable"
+        :id="idOfInput"
+        :value="value"
+        dense="false"
+        v-model.number="model"
+        type="number"
+        style="max-height: 10px;padding: 0;"
+        outlined
+        standout="bg-lime-1 text-blue"
+        @input="handleInput($event)"
+        lazy-rules
+        maxlength="6"
+        v-model="text"
+        debounce="300"
+      ></q-input>
     </div>
   </div>
 </template>
@@ -39,12 +48,24 @@
 <script>
 import Vselect from "vue-select";
 import "vue-select/dist/vue-select.css";
+// Vselect.props.components.default = () => ({
+//   Deselect: {
+//     render: h => h("span", "❌")
+//   },
+//   OpenIndicator: {
+//     render: h => h("span", "🔽")
+//   }
+// });
 export default {
   name: "SafaComboBox",
   data() {
-    return {};
+    return {
+      text: "",
+      read: null,
+      notEditable: null,
+      aligned: null
+    };
   },
-
   components: {
     Vselect
   },
@@ -112,7 +133,10 @@ export default {
     items: {
       type: Array,
       default: function() {
-        return [{ label: "Canada", code: "ca" }, { label: "Iran", code: "ir" }];
+        return [
+          { label: "کانادا", code: "ca" },
+          { label: "ایران", code: "ir" }
+        ];
       }
     },
     // come from db => go to serveice
@@ -136,13 +160,73 @@ export default {
       }
     }
   },
+  created() {
+    this.$set(this, "text", this.value);
+    this.align === "right"
+      ? this.$set(this, "aligned", true)
+      : this.$set(this, "aligned", false);
+    switch (this.m) {
+      case "r":
+        return this.$set(this, "read", true);
+      case "ne":
+        return this.$set(this, "notEditable", true);
+      default:
+        return;
+    }
+  },
   methods: {
     handleInput($event) {
       this.$emit("inputer", $event);
+    },
+    rule() {
+      let pattern = "[0-9]{10}";
+      return pattern.includes;
     }
   }
 };
 </script>
-
-<style lang="scss" scoped>
+<style lang="scss" >
+@import url("http://cdn.font-store.ir/behdad.css");
+.style-chooser .vs__search::placeholder,
+.style-chooser .vs__dropdown-toggle,
+.style-chooser .vs__dropdown-menu {
+  background: "lime-1";
+  border: none;
+  color: #0070cc;
+  direction: rtl;
+  text-align: right;
+}
+.style-chooser .vs__dropdown-toggle {
+  margin: 0 4px;
+}
+.style-chooser .vs__clear,
+.style-chooser .vs__open-indicator {
+  fill: #0070cc;
+  color: red;
+  margin-left: 6px;
+}
+// ////////////////////////
+.safa-combo-box {
+  font-family: "behdad", "Courier New", Courier, monospace;
+  padding: 0;
+  margin: 0;
+  .label-container {
+    position: relative;
+    & .label {
+      position: absolute;
+      padding: 0 4px;
+      bottom: -2.4rem;
+    }
+    & .left-label {
+      position: absolute;
+      padding: 0 4px;
+      bottom: -2.4rem;
+    }
+  }
+  .input-container {
+    .label-aligned {
+      text-align: right;
+    }
+  }
+}
 </style>
