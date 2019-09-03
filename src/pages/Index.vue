@@ -15,6 +15,7 @@
       :Domain="Domain"
       :HideValue="HideValue"
       @inputer="checkInfo"
+      @selectedVal="selectedVal"
     />
   </q-page>
 </template>
@@ -31,13 +32,22 @@ export default {
       m: "e",
       c: "1",
       align: "right",
-      width: "200px",
-      height: "50px",
+      width: "150px",
+      height: "100px",
       value: "",
-      label: " نظرات",
-      dense: false,
+      label: "نظرات",
+      dense: true,
       placeholder: "انتخاب",
-      // items: [],
+      items: [
+        { title: "ایران", id: "1" },
+        { title: "کانادا", id: "2" },
+        { title: "کره شمالی", id: "3" },
+        { title: "کره جنوبی", id: "4" }
+      ],
+      // { label: "canada", code: "ca" },
+      // { label: "iran", code: "ir" },
+      // { label: "north korea", code: "kr" },
+      // { label: "sout korea", code: "nkr" }
       DtoName: "",
       Domain: "",
       HideValue: true
@@ -45,7 +55,10 @@ export default {
   },
   methods: {
     checkInfo(val) {
-      console.log(val);
+      console.log(val, "i am checkInfo");
+    },
+    selectedVal(p) {
+      console.log(p);
     }
   }
 };

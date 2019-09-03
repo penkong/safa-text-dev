@@ -1,56 +1,53 @@
 <template>
-  <div class="safa-combo-box">
-    <div
-      class="row"
-      :style="{minHeigh: height, marginTop: '10px', minWidth: width }"
-      style=" display: flex;
-        align-items: center ;
-        justify-content: center;"
-    >
+  <div class="safa-combo-box row" :style="{minHeigh: height, minWidth: width }">
+    <div>
       <Vselect
         class="style-chooser"
         :placeholder="placeholder"
         :style="{minWidth: width }"
+        @input="setSelected"
         :options="items"
-      ></Vselect>
-      <div
-        style="
-        margin: 0;
-        padding: 0;
-        margin-left: 5px;
-        width: 70px;"
+        :value="selected"
       >
-        <q-input
-          :readonly="read"
-          :disable="notEditable"
-          :id="idOfInput"
-          :value="value"
-          dense="true"
-          v-model.number="model"
-          type="number"
-          style="max-height: 10px;padding: 0;"
-          outlined
-          standout="bg-lime-1 text-blue"
-          @input="handleInput($event)"
-          lazy-rules
-          maxlength="6"
-          v-model="text"
-          debounce="300"
-        ></q-input>
-      </div>
-      <label
-        v-if="aligned"
-        :for="idOfInput"
-        class="label-container label"
-        :style="{right: -c + 'rem'}"
-      >{{ label }}</label>
-      <label
-        v-else
-        :for="idOfInput"
-        class="label-container left-label"
-        :style="{ left: -c + 'rem'}"
-      >{{ label }}</label>
+        <template #search="{attributes, events}">
+          <input class="vs__search" :required="!selected" v-bind="attributes" v-on="events" />
+        </template>
+      </Vselect>
     </div>
+    <div class="input-container">
+      <q-input
+        rounded
+        flat
+        borderless
+        bg-color="grey-1"
+        :readonly="read"
+        :disable="notEditable"
+        :id="idOfInput"
+        :value="value"
+        :dense="dense"
+        type="number"
+        style="max-height: 10px;padding: 0;"
+        @input="handleInput($event)"
+        lazy-rules
+        maxlength="12"
+        :input-style="cssProps"
+        v-model="inputNum"
+        debounce="300"
+      ></q-input>
+      <!-- :rules="[val => val > -1 && val <= this.lastId]" -->
+    </div>
+    <label
+      v-if="aligned"
+      :for="idOfInput"
+      class="label-container label"
+      :style="{right: -c + 'rem'}"
+    >{{ label }}</label>
+    <label
+      v-else
+      :for="idOfInput"
+      class="label-container left-label"
+      :style="{ left: -c + 'rem'}"
+    >{{ label }}</label>
   </div>
 </template>
 
@@ -58,22 +55,17 @@
 import uid from "uuid";
 import Vselect from "vue-select";
 import "vue-select/dist/vue-select.css";
-// Vselect.props.components.default = () => ({
-//   Deselect: {
-//     render: h => h("span", "❌")
-//   },
-//   OpenIndicator: {
-//     render: h => h("span", "🔽")
-//   }
-// });
 export default {
   name: "SafaComboBox",
   data() {
     return {
-      text: "",
+      aligned: null,
       read: null,
       notEditable: null,
-      aligned: null
+      idOfInput: null,
+      inputNum: "",
+      selected: "",
+      lastId: null
     };
   },
   components: {
@@ -143,10 +135,7 @@ export default {
     items: {
       type: Array,
       default: function() {
-        return [
-          { label: "کانادا", code: "ca" },
-          { label: "ایران", code: "ir" }
-        ];
+        return [];
       }
     },
     // come from db => go to serveice
@@ -171,7 +160,9 @@ export default {
     }
   },
   created() {
-    this.$set(this, "text", this.value);
+    const lastId = this.items[this.items.length - 1].id;
+    this.$set(this, "lastId", lastId);
+    this.$set(this, "inputNum", this.value);
     const generatedId = "Safa" + "_" + uid();
     this.$set(this, "idOfInput", generatedId);
     this.align === "right"
@@ -186,13 +177,39 @@ export default {
         return;
     }
   },
+  computed: {
+    cssProps() {
+      if (this.align === "right") {
+        return {
+          fontSize: "0.80rem"
+        };
+      } else {
+        return {
+          float: "left",
+          fontSize: "0.80rem"
+        };
+      }
+    }
+  },
   methods: {
     handleInput($event) {
-      this.$emit("inputer", $event);
+      // this.value = parseInt($event);
+      if ($event <= 0 && $event >= this.lastId) {
+        this.selected = "";
+      }
+      if ($event.length) {
+        this.inputNum = parseInt($event);
+        const itemForSelect = this.items.filter(item => item.id === $event);
+        this.selected = itemForSelect[0].title;
+        this.$emit("inputer", $event);
+      } else {
+        this.selected = "";
+      }
     },
-    rule() {
-      let pattern = "[0-9]{10}";
-      return pattern.includes;
+    setSelected(val) {
+      this.selected = val.title;
+      this.inputNum = val.id;
+      this.$emit("selectedVal", val.title);
     }
   }
 };
@@ -201,11 +218,22 @@ export default {
 @import url("http://cdn.font-store.ir/behdad.css");
 
 // ////////////////////////
+
 .safa-combo-box {
   font-family: "behdad", "Courier New", Courier, monospace;
   padding: 0;
   margin: 0;
   width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .q-field--dense .q-field__control {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #0070cc;
+    height: 30px !important;
+    padding: 0 -2px 0 3px !important;
+    font-size: 1rem;
+  }
   .style-chooser .vs__search::placeholder,
   .style-chooser .vs__dropdown-toggle,
   .style-chooser .vs__dropdown-menu {
@@ -221,8 +249,15 @@ export default {
   .style-chooser .vs__clear,
   .style-chooser .vs__open-indicator {
     fill: #0070cc;
-    color: red;
     margin-left: 6px;
+  }
+  .input-container {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    margin-left: 5px;
+    width: 70px;
+    font-family: "Courier New", Courier, monospace;
   }
   .label-container {
     position: relative;
