@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <SafaDropDown
+    <SafaComboBox
       :m="m"
       :c="c"
       :align="align"
@@ -20,24 +20,24 @@
 </template>
 
 <script>
-import SafaDropDown from "../components/SafaDropDown";
+import SafaComboBox from "../components/SafaComboBox";
 export default {
   name: "PageIndex",
   components: {
-    SafaDropDown
+    SafaComboBox
   },
   data() {
     return {
       m: "e",
       c: "5",
       align: "right",
-      width: "400px",
-      height: "200px",
+      width: "200px",
+      height: "50px",
       value: "",
       label: " نظرات",
-      dense: true,
+      dense: false,
       placeholder: "را بنویسید",
-      items: [],
+      // items: [],
       DtoName: "",
       Domain: "",
       HideValue: true

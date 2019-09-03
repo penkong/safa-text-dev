@@ -1,58 +1,52 @@
 <template>
   <div>
-    <div class="row relative-position" style="padding:7px;">
-      <!-- <label v-if="label !=='none'" :class="[`col-md-${c}`,'col-xs-12' ,'safa-label']">{{label}}</label> -->
-      <input
-        v-if="!HideValue"
-        :readonly="readOnly"
-        :style="{ backgroundColor: 'red' }"
-        class="safa-Combo safa-text-combo"
-        v-bind:value="value"
-        v-on:input="$emit('input', $event.target.value)"
-      />
-      <select
-        v-if="readOnly"
-        disabled
-        :style="{ backgroundColor: activeColor }"
-        class="safa-Combo col"
-        v-model="selected"
-        @change="OnSelected($event.target.value)"
+    <div
+      class="row relative-position"
+      :style="{minHeigh: height, marginTop: '10px' }"
+      style=" display: flex;
+        align-items: center ;
+        justify-content: center;"
+    >
+      <Vselect :style="{minWidth: width }" :options="items"></Vselect>
+      <div
+        class="sls"
+        style="
+        margin: 0;
+        padding: 0;
+        margin-left: 5px;
+        width: 60px;"
       >
-        <option v-for="(item, index) in ci" :key="index" v-bind:value="item.Id">
-          <label style="margin:2px;fontsize:12px;">{{item.Title}}</label>
-        </option>
-      </select>
-      <select
-        v-else
-        :style="{ backgroundColor: activeColor }"
-        class="safa-Combo col"
-        v-model="selected"
-        @change="OnSelected($event.target.value)"
-      >
-        <option v-for="(item, index) in ci" :key="index" v-bind:value="item.Id">
-          <label style="margin:2px;fontsize:12px;">{{item.Title}}</label>
-        </option>
-      </select>
+        <q-input
+          :readonly="read"
+          :disable="notEditable"
+          :id="idOfInput"
+          :value="value"
+          dense="false"
+          v-model.number="model"
+          type="text"
+          filled
+          style="max-height: 10px"
+          outlined
+          @input="handleInput($event)"
+          lazy-rules
+          v-model="text"
+        ></q-input>
+      </div>
     </div>
-    <dropdown :options="arrayOfObjects" :selected="object" v-on:updateOption="methodToRunOnSelect"></dropdown>
   </div>
 </template>
 
 <script>
-import dropdown from "vue-dropdowns";
+import Vselect from "vue-select";
+import "vue-select/dist/vue-select.css";
 export default {
-  name: "SafaDropDown",
+  name: "SafaComboBox",
   data() {
-    return {
-      arrayOfObjects: [1, 2, 4, 5],
-      object: {
-        name: "Object Name"
-      }
-    };
+    return {};
   },
 
   components: {
-    dropdown: dropdown
+    Vselect
   },
   props: {
     m: {
@@ -118,7 +112,7 @@ export default {
     items: {
       type: Array,
       default: function() {
-        return [];
+        return [{ label: "Canada", code: "ca" }, { label: "Iran", code: "ir" }];
       }
     },
     // come from db => go to serveice
@@ -143,8 +137,8 @@ export default {
     }
   },
   methods: {
-    methodToRunOnSelect(payload) {
-      this.object = payload;
+    handleInput($event) {
+      this.$emit("inputer", $event);
     }
   }
 };
