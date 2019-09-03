@@ -19,7 +19,7 @@
         rounded
         flat
         borderless
-        bg-color="grey-1"
+        bg-color="blue-1"
         :readonly="read"
         :disable="notEditable"
         :id="idOfInput"
