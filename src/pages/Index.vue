@@ -29,9 +29,9 @@ export default {
   data() {
     return {
       m: "e",
-      c: "5",
+      c: "1",
       align: "right",
-      width: "150px",
+      width: "200px",
       height: "50px",
       value: "",
       label: " نظرات",

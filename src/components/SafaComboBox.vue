@@ -1,51 +1,61 @@
 <template>
-  <div
-    class="row safa-combo-box relative-position"
-    :style="{minHeigh: height, marginTop: '10px' }"
-    style=" display: flex;
+  <div class="safa-combo-box">
+    <div
+      class="row"
+      :style="{minHeigh: height, marginTop: '10px', minWidth: width }"
+      style=" display: flex;
         align-items: center ;
         justify-content: center;"
-  >
-    <div v-if="label" class="label-container">
-      <label v-if="aligned" :for="idOfInput" class="label" :style="{right: -c + 'rem'}">{{ label }}</label>
-      <label v-else :for="idOfInput" class="left-label" :style="{ left: -c + 'rem'}">{{ label }}</label>
-    </div>
-    <Vselect
-      class="style-chooser"
-      :placeholder="placeholder"
-      :style="{minWidth: width }"
-      :options="items"
-    ></Vselect>
-    <div
-      class="sls"
-      style="
+    >
+      <Vselect
+        class="style-chooser"
+        :placeholder="placeholder"
+        :style="{minWidth: width }"
+        :options="items"
+      ></Vselect>
+      <div
+        style="
         margin: 0;
         padding: 0;
         margin-left: 5px;
         width: 70px;"
-    >
-      <q-input
-        :readonly="read"
-        :disable="notEditable"
-        :id="idOfInput"
-        :value="value"
-        dense="false"
-        v-model.number="model"
-        type="number"
-        style="max-height: 10px;padding: 0;"
-        outlined
-        standout="bg-lime-1 text-blue"
-        @input="handleInput($event)"
-        lazy-rules
-        maxlength="6"
-        v-model="text"
-        debounce="300"
-      ></q-input>
+      >
+        <q-input
+          :readonly="read"
+          :disable="notEditable"
+          :id="idOfInput"
+          :value="value"
+          dense="true"
+          v-model.number="model"
+          type="number"
+          style="max-height: 10px;padding: 0;"
+          outlined
+          standout="bg-lime-1 text-blue"
+          @input="handleInput($event)"
+          lazy-rules
+          maxlength="6"
+          v-model="text"
+          debounce="300"
+        ></q-input>
+      </div>
+      <label
+        v-if="aligned"
+        :for="idOfInput"
+        class="label-container label"
+        :style="{right: -c + 'rem'}"
+      >{{ label }}</label>
+      <label
+        v-else
+        :for="idOfInput"
+        class="label-container left-label"
+        :style="{ left: -c + 'rem'}"
+      >{{ label }}</label>
     </div>
   </div>
 </template>
 
 <script>
+import uid from "uuid";
 import Vselect from "vue-select";
 import "vue-select/dist/vue-select.css";
 // Vselect.props.components.default = () => ({
@@ -162,6 +172,8 @@ export default {
   },
   created() {
     this.$set(this, "text", this.value);
+    const generatedId = "Safa" + "_" + uid();
+    this.$set(this, "idOfInput", generatedId);
     this.align === "right"
       ? this.$set(this, "aligned", true)
       : this.$set(this, "aligned", false);
@@ -187,45 +199,43 @@ export default {
 </script>
 <style lang="scss" >
 @import url("http://cdn.font-store.ir/behdad.css");
-.style-chooser .vs__search::placeholder,
-.style-chooser .vs__dropdown-toggle,
-.style-chooser .vs__dropdown-menu {
-  background: "lime-1";
-  border: none;
-  color: #0070cc;
-  direction: rtl;
-  text-align: right;
-}
-.style-chooser .vs__dropdown-toggle {
-  margin: 0 4px;
-}
-.style-chooser .vs__clear,
-.style-chooser .vs__open-indicator {
-  fill: #0070cc;
-  color: red;
-  margin-left: 6px;
-}
+
 // ////////////////////////
 .safa-combo-box {
   font-family: "behdad", "Courier New", Courier, monospace;
   padding: 0;
   margin: 0;
+  width: auto;
+  .style-chooser .vs__search::placeholder,
+  .style-chooser .vs__dropdown-toggle,
+  .style-chooser .vs__dropdown-menu {
+    background: "lime-1";
+    border: none;
+    color: #0070cc;
+    direction: rtl;
+    text-align: right;
+  }
+  .style-chooser .vs__dropdown-toggle {
+    margin: 0 4px;
+  }
+  .style-chooser .vs__clear,
+  .style-chooser .vs__open-indicator {
+    fill: #0070cc;
+    color: red;
+    margin-left: 6px;
+  }
   .label-container {
     position: relative;
     & .label {
       position: absolute;
       padding: 0 4px;
       bottom: -2.4rem;
+      margin-left: 1rem;
     }
     & .left-label {
       position: absolute;
       padding: 0 4px;
       bottom: -2.4rem;
-    }
-  }
-  .input-container {
-    .label-aligned {
-      text-align: right;
     }
   }
 }
