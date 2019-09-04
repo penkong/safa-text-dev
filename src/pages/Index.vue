@@ -45,7 +45,15 @@ export default {
         { title: "ایران", id: "1" },
         { title: "کانادا", id: "2" },
         { title: "کره شمالی", id: "3" },
-        { title: "کره جنوبی", id: "4" }
+        { title: "کره جنوبی", id: "4" },
+        { title: "آمریکا", id: "5" },
+        { title: "کاستاریکا", id: "6" },
+        { title: "جزایر مارشال", id: "7" },
+        { title: "گوام", id: "8" },
+        { title: "بنگال", id: "9" },
+        { title: "تاسمانی", id: "10" },
+        { title: "چاد", id: "11" },
+        { title: "ساحل عاج", id: "12" }
       ],
       DtoName: "",
       Domain: "",
