@@ -1,59 +1,93 @@
 <template>
-  <div class="safa-combo-box row" :style="{minHeigh: height, minWidth: width }">
-    <div>
-      <!-- :title="selected"
-      -->
-      <Vselect
-        :placeholder="placeholder"
-        :options="items"
-        :value="selected"
-        @input="setSelected"
-        :inputId="idOfInput"
-        :disabled="read || notEditable"
-        class="style-chooser"
-        :style="{minWidth: width }"
-      >
-        <template #search="{attributes, events}">
-          <input class="vs__search" :required="!selected" v-bind="attributes" v-on="events" />
-        </template>
-      </Vselect>
-    </div>
-    <div class="input-container">
-      <q-input
-        rounded
-        flat
-        borderless
-        bg-color="blue-1"
-        bottom-slots
-        :readonly="read"
-        :disable="notEditable"
-        :id="idOfInput"
-        :dense="dense"
-        type="number"
-        style="max-height: 10px;padding: 0;"
-        @input="handleInput($event)"
-        lazy-rules
-        maxlength="12"
-        :input-style="cssProps"
-        v-model="inputNum"
-        :rules="[
+  <div>
+    <div v-if="aligned" class="safa-combo-box row" :style="{minHeigh: height, minWidth: width }">
+      <div>
+        <Vselect
+          :placeholder="placeholder"
+          :options="items"
+          :value="selected"
+          @input="setSelected"
+          :inputId="idOfInput"
+          :disabled="read || notEditable"
+          class="style-chooser"
+          :style="{minWidth: width }"
+        >
+          <template #search="{attributes, events}">
+            <input class="vs__search" :required="!selected" v-bind="attributes" v-on="events" />
+          </template>
+        </Vselect>
+      </div>
+      <div class="input-container">
+        <q-input
+          rounded
+          flat
+          borderless
+          bg-color="blue-1"
+          bottom-slots
+          :readonly="read"
+          :disable="notEditable"
+          :id="idOfInput"
+          :dense="dense"
+          type="number"
+          style="max-height: 10px;padding: 0;"
+          @input="handleInput($event)"
+          lazy-rules
+          maxlength="12"
+          :input-style="cssProps"
+          v-model="inputNum"
+          :rules="[
           val => val > 0 && val <= this.lastId,
         ]"
-      ></q-input>
-      <!-- :rules="[val => val > -1 && val <= this.lastId]" -->
+        ></q-input>
+      </div>
+      <label :for="idOfInput" class="label-container label" :style="{right: -c + 'rem'}">{{ label }}</label>
     </div>
-    <label
-      v-if="aligned"
-      :for="idOfInput"
-      class="label-container label"
-      :style="{right: -c + 'rem'}"
-    >{{ label }}</label>
-    <label
-      v-else
-      :for="idOfInput"
-      class="label-container left-label"
-      :style="{ left: -c + 'rem'}"
-    >{{ label }}</label>
+    <div v-else class="safa-combo-box row" :style="{minHeigh: height, minWidth: width }">
+      <label
+        :for="idOfInput"
+        class="label-container left-label"
+        :style="{ left: -c + 'rem'}"
+      >{{ label }}</label>
+      <div class="input-container">
+        <q-input
+          rounded
+          flat
+          borderless
+          bg-color="blue-1"
+          bottom-slots
+          :readonly="read"
+          :disable="notEditable"
+          :id="idOfInput"
+          :dense="dense"
+          type="number"
+          style="max-height: 10px;padding: 0;"
+          @input="handleInput($event)"
+          lazy-rules
+          maxlength="12"
+          :input-style="cssProps"
+          v-model="inputNum"
+          :rules="[
+          val => val > 0 && val <= this.lastId,
+        ]"
+        ></q-input>
+      </div>
+      <div>
+        <Vselect
+          :placeholder="placeholder"
+          :options="items"
+          :value="selected"
+          @input="setSelected"
+          :inputId="idOfInput"
+          :disabled="read || notEditable"
+          class="style-chooser"
+          :style="{minWidth: width }"
+        >
+          <template #search="{attributes, events}">
+            <input class="vs__search" :required="!selected" v-bind="attributes" v-on="events" />
+          </template>
+        </Vselect>
+      </div>
+    </div>
   </div>
 </template>
 

@@ -46,10 +46,6 @@ export default {
         { title: "کره شمالی", id: "3" },
         { title: "کره جنوبی", id: "4" }
       ],
-      // { label: "canada", code: "ca" },
-      // { label: "iran", code: "ir" },
-      // { label: "north korea", code: "kr" },
-      // { label: "sout korea", code: "nkr" }
       DtoName: "",
       Domain: "",
       HideValue: true
