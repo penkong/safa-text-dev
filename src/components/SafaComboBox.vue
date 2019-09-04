@@ -1,13 +1,17 @@
 <template>
   <div class="safa-combo-box row" :style="{minHeigh: height, minWidth: width }">
     <div>
+      <!-- :title="selected"
+      -->
       <Vselect
-        class="style-chooser"
         :placeholder="placeholder"
-        :style="{minWidth: width }"
-        @input="setSelected"
         :options="items"
         :value="selected"
+        @input="setSelected"
+        :inputId="idOfInput"
+        :disabled="read || notEditable"
+        class="style-chooser"
+        :style="{minWidth: width }"
       >
         <template #search="{attributes, events}">
           <input class="vs__search" :required="!selected" v-bind="attributes" v-on="events" />
@@ -20,10 +24,10 @@
         flat
         borderless
         bg-color="blue-1"
+        bottom-slots
         :readonly="read"
         :disable="notEditable"
         :id="idOfInput"
-        :value="value"
         :dense="dense"
         type="number"
         style="max-height: 10px;padding: 0;"
@@ -32,7 +36,9 @@
         maxlength="12"
         :input-style="cssProps"
         v-model="inputNum"
-        debounce="300"
+        :rules="[
+          val => val > 0 && val <= this.lastId,
+        ]"
       ></q-input>
       <!-- :rules="[val => val > -1 && val <= this.lastId]" -->
     </div>
@@ -65,7 +71,8 @@ export default {
       idOfInput: null,
       inputNum: "",
       selected: "",
-      lastId: null
+      lastId: null,
+      error: false
     };
   },
   components: {
@@ -132,6 +139,10 @@ export default {
     placeholder: {
       type: String
     },
+    helper: {
+      type: String,
+      default: "تصحیح شود"
+    },
     items: {
       type: Array,
       default: function() {
@@ -192,11 +203,21 @@ export default {
     }
   },
   methods: {
+    helperMethod() {
+      this.inputNum > this.lastId && this.inputNum < 0 ? "تصحیح شود" : null;
+    },
     handleInput($event) {
       // this.value = parseInt($event);
-      if ($event <= 0 && $event >= this.lastId) {
-        this.selected = "";
-      }
+      // if (this.title === undefined) {
+      //   this.title = "سلام";
+      // }
+      // console.log($event);
+      // if (parseInt($event) <= 0 || parseInt($event) >= this.lastId) {
+      //   // this.selected = "";
+      //   this.title = this.lastId;
+      //   this.$set(this, "selected", null);
+      //   this.$set(this, "inputNum", null);
+      // }
       if ($event.length) {
         this.inputNum = parseInt($event);
         const itemForSelect = this.items.filter(item => item.id === $event);
@@ -207,9 +228,14 @@ export default {
       }
     },
     setSelected(val) {
-      this.selected = val.title;
-      this.inputNum = val.id;
-      this.$emit("selectedVal", val.title);
+      if (val) {
+        this.selected = val;
+        this.inputNum = val.id;
+        this.$emit("selectedVal", val);
+      } else {
+        this.inputNum = null;
+        this.selected = null;
+      }
     }
   }
 };
@@ -227,12 +253,25 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   .q-field--dense .q-field__control {
     font-family: Arial, Helvetica, sans-serif;
     color: #0070cc;
     height: 30px !important;
-    padding: 0 -2px 0 3px !important;
+    padding: 0 3px !important;
     font-size: 1rem;
+  }
+
+  .q-icon,
+  .material-icons {
+    // margin-bottom: 0.6rem;
+    // margin-left: -0.6rem;
+    position: absolute;
+    right: 0;
+    top: 3px;
+    .text-negative {
+      background-color: red;
+    }
   }
   .style-chooser .vs__search::placeholder,
   .style-chooser .vs__dropdown-toggle,

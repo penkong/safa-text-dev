@@ -10,6 +10,7 @@
       :label="label"
       :dense="dense"
       :placeholder="placeholder"
+      :helper="helper"
       :items="items"
       :DtoName="DtoName"
       :Domain="Domain"
@@ -38,6 +39,7 @@ export default {
       label: "نظرات",
       dense: true,
       placeholder: "انتخاب",
+      helper: "تصحیح شود",
       items: [
         { title: "ایران", id: "1" },
         { title: "کانادا", id: "2" },
