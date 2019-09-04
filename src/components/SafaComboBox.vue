@@ -35,12 +35,9 @@
           maxlength="12"
           :input-style="cssProps"
           v-model="inputNum"
-          :rules="[
-          val => val > 0 && val <= this.lastId,
-        ]"
         ></q-input>
       </div>
-      <label :for="idOfInput" class="label-container label" :style="{right: -c + 'rem'}">{{ label }}</label>
+      <label :for="idOfInput" class="label-container label" :style="{right: -c + 'px'}">{{ label }}</label>
     </div>
     <div v-else class="safa-combo-box row" :style="{minHeigh: height, minWidth: width }">
       <label
@@ -66,9 +63,6 @@
           maxlength="12"
           :input-style="cssProps"
           v-model="inputNum"
-          :rules="[
-          val => val > 0 && val <= this.lastId,
-        ]"
         ></q-input>
       </div>
       <div>
@@ -106,7 +100,8 @@ export default {
       inputNum: "",
       selected: "",
       lastId: null,
-      error: false
+      error: false,
+      itemsFromData: null
     };
   },
   components: {
@@ -237,6 +232,9 @@ export default {
     }
   },
   methods: {
+    // onLoadItems() {
+    //   return this.$set(this, "itemsFromData", dataLoader(this.items));
+    // },
     handleInput($event) {
       const itemForSelect = this.items.filter(item => item.code === $event);
       if ($event > 0 && $event <= this.lastId) {
@@ -249,8 +247,6 @@ export default {
       }
     },
     setSelected(val) {
-      // for (let el of items) {
-      // }
       if (val) {
         this.selected = val.label;
         this.inputNum = val.code;
@@ -265,9 +261,6 @@ export default {
 </script>
 <style lang="scss" >
 @import url("http://cdn.font-store.ir/behdad.css");
-
-// ////////////////////////
-
 .safa-combo-box {
   font-family: "behdad", "Courier New", Courier, monospace;
   padding: 0;
@@ -277,12 +270,17 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
+  font-size: 0.8rem;
   .q-field--dense .q-field__control {
     font-family: Arial, Helvetica, sans-serif;
     color: #0070cc;
-    height: 30px !important;
+    height: 20px !important;
+    width: 3rem;
     padding: 0 3px !important;
     font-size: 1rem;
+  }
+  .q-field__inner {
+    max-width: 3.5rem;
   }
 
   .q-icon,
@@ -291,7 +289,7 @@ export default {
     // margin-left: -0.6rem;
     position: absolute;
     right: 0;
-    top: 3px;
+    top: -2px;
     .text-negative {
       background-color: red;
     }
@@ -327,7 +325,6 @@ export default {
       position: absolute;
       padding: 0 4px;
       bottom: -2.4rem;
-      margin-left: 1rem;
     }
     & .left-label {
       position: absolute;

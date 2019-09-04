@@ -11,7 +11,7 @@
       :dense="dense"
       :placeholder="placeholder"
       :helper="helper"
-      :items="items"
+      :items="iterator(this.items)"
       :DtoName="DtoName"
       :Domain="Domain"
       :HideValue="HideValue"
@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       m: "e",
-      c: "1",
+      c: "2",
       align: "right",
       width: "150px",
       height: "300px",
@@ -42,10 +42,10 @@ export default {
       helper: "تصحیح شود",
       items: [
         // title , id  => will become label and code
-        { label: "ایران", code: "1" },
-        { label: "کانادا", code: "2" },
-        { label: "کره شمالی", code: "3" },
-        { label: "کره جنوبی", code: "4" }
+        { title: "ایران", id: "1" },
+        { title: "کانادا", id: "2" },
+        { title: "کره شمالی", id: "3" },
+        { title: "کره جنوبی", id: "4" }
       ],
       DtoName: "",
       Domain: "",
@@ -53,6 +53,26 @@ export default {
     };
   },
   methods: {
+    iterator() {
+      let newArr = [];
+      let keysMap = {
+        title: "label",
+        id: "code"
+      };
+      let renameKeys = (keyzMap, obj) =>
+        Object.keys(obj).reduce(
+          (acc, key) => ({
+            ...acc,
+            ...{ [keyzMap[key] || key]: obj[key] }
+          }),
+          {}
+        );
+      for (let el of this.items) {
+        newArr.push(renameKeys(keysMap, el));
+      }
+      console.log(newArr);
+      return newArr;
+    },
     checkInfo(val) {
       console.log(val, "i am checkInfo");
     },
