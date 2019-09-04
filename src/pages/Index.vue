@@ -60,7 +60,7 @@ export default {
       console.log(val, "i am checkInfo");
     },
     selectedVal(p) {
-      console.log(p);
+      console.log(p, "i am selected val");
     }
   }
 };

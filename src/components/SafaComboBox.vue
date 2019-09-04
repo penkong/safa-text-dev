@@ -203,38 +203,27 @@ export default {
     }
   },
   methods: {
-    helperMethod() {
-      this.inputNum > this.lastId && this.inputNum < 0 ? "تصحیح شود" : null;
-    },
     handleInput($event) {
-      // this.value = parseInt($event);
-      // if (this.title === undefined) {
-      //   this.title = "سلام";
-      // }
-      // console.log($event);
-      // if (parseInt($event) <= 0 || parseInt($event) >= this.lastId) {
-      //   // this.selected = "";
-      //   this.title = this.lastId;
-      //   this.$set(this, "selected", null);
-      //   this.$set(this, "inputNum", null);
-      // }
-      if ($event.length) {
+      const itemForSelect = this.items.filter(item => item.id === $event);
+      if ($event > 0 && $event <= this.lastId) {
         this.inputNum = parseInt($event);
-        const itemForSelect = this.items.filter(item => item.id === $event);
         this.selected = itemForSelect[0].title;
-        this.$emit("inputer", $event);
+        this.$emit("inputer", [$event, this.selected]);
       } else {
         this.selected = "";
+        this.inputNum = "";
       }
     },
     setSelected(val) {
+      // for (let el of items) {
+      // }
       if (val) {
-        this.selected = val;
+        this.selected = val.title;
         this.inputNum = val.id;
         this.$emit("selectedVal", val);
       } else {
-        this.inputNum = null;
         this.selected = null;
+        this.inputNum = null;
       }
     }
   }
