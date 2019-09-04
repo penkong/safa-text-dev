@@ -205,7 +205,7 @@ export default {
     }
   },
   created() {
-    const lastId = this.items[this.items.length - 1].id;
+    const lastId = this.items[this.items.length - 1].code;
     this.$set(this, "lastId", lastId);
     this.$set(this, "inputNum", this.value);
     const generatedId = "Safa" + "_" + uid();
@@ -238,10 +238,10 @@ export default {
   },
   methods: {
     handleInput($event) {
-      const itemForSelect = this.items.filter(item => item.id === $event);
+      const itemForSelect = this.items.filter(item => item.code === $event);
       if ($event > 0 && $event <= this.lastId) {
         this.inputNum = parseInt($event);
-        this.selected = itemForSelect[0].title;
+        this.selected = itemForSelect[0].label;
         this.$emit("inputer", [$event, this.selected]);
       } else {
         this.selected = "";
@@ -252,8 +252,8 @@ export default {
       // for (let el of items) {
       // }
       if (val) {
-        this.selected = val.title;
-        this.inputNum = val.id;
+        this.selected = val.label;
+        this.inputNum = val.code;
         this.$emit("selectedVal", val);
       } else {
         this.selected = null;

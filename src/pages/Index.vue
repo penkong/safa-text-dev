@@ -34,17 +34,18 @@ export default {
       c: "1",
       align: "right",
       width: "150px",
-      height: "100px",
+      height: "300px",
       value: "",
       label: "نظرات",
       dense: true,
       placeholder: "انتخاب",
       helper: "تصحیح شود",
       items: [
-        { title: "ایران", id: "1" },
-        { title: "کانادا", id: "2" },
-        { title: "کره شمالی", id: "3" },
-        { title: "کره جنوبی", id: "4" }
+        // title , id  => will become label and code
+        { label: "ایران", code: "1" },
+        { label: "کانادا", code: "2" },
+        { label: "کره شمالی", code: "3" },
+        { label: "کره جنوبی", code: "4" }
       ],
       DtoName: "",
       Domain: "",
