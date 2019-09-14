@@ -4,7 +4,7 @@
       <div>
         <Vselect
           :placeholder="placeholder"
-          :options="items"
+          :options="iterator(this.items)"
           :value="selected"
           @input="setSelected"
           :inputId="idOfInput"
@@ -84,6 +84,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import uid from "uuid";
@@ -235,6 +236,26 @@ export default {
     // onLoadItems() {
     //   return this.$set(this, "itemsFromData", dataLoader(this.items));
     // },
+    iterator() {
+      let newArr = [];
+      let keysMap = {
+        title: "label",
+        id: "code"
+      };
+      let renameKeys = (keyzMap, obj) =>
+        Object.keys(obj).reduce(
+          (acc, key) => ({
+            ...acc,
+            ...{ [keyzMap[key] || key]: obj[key] }
+          }),
+          {}
+        );
+      for (let el of this.items) {
+        newArr.push(renameKeys(keysMap, el));
+      }
+      // console.log(newArr);
+      return newArr;
+    },
     handleInput($event) {
       const itemForSelect = this.items.filter(item => item.code === $event);
       if ($event > 0 && $event <= this.lastId) {

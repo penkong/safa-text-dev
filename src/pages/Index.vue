@@ -11,7 +11,7 @@
       :dense="dense"
       :placeholder="placeholder"
       :helper="helper"
-      :items="iterator(this.items)"
+      :items="items"
       :DtoName="DtoName"
       :Domain="Domain"
       :HideValue="HideValue"
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import SafaComboBox from "../components/SafaComboBox";
+import SafaComboBox from "../components/SafaComboBox/SafaComboBox";
 export default {
   name: "PageIndex",
   components: {
@@ -41,7 +41,9 @@ export default {
       placeholder: "انتخاب",
       helper: "تصحیح شود",
       items: [
-        // title , id  => will become label and code
+        // sequence is important
+        // wrong { id , title}
+        // correct {title , id}  => will become {label,code}
         { title: "ایران", id: "1" },
         { title: "کانادا", id: "2" },
         { title: "کره شمالی", id: "3" },
@@ -61,26 +63,6 @@ export default {
     };
   },
   methods: {
-    iterator() {
-      let newArr = [];
-      let keysMap = {
-        title: "label",
-        id: "code"
-      };
-      let renameKeys = (keyzMap, obj) =>
-        Object.keys(obj).reduce(
-          (acc, key) => ({
-            ...acc,
-            ...{ [keyzMap[key] || key]: obj[key] }
-          }),
-          {}
-        );
-      for (let el of this.items) {
-        newArr.push(renameKeys(keysMap, el));
-      }
-      console.log(newArr);
-      return newArr;
-    },
     checkInfo(val) {
       console.log(val, "i am checkInfo");
     },
