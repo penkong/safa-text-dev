@@ -2,7 +2,6 @@
   <div>
     <div v-if="aligned" class="safa-combo-box row" :style="{minHeigh: height, minWidth: width }">
       <div>
-        <!-- :value="selected" -->
         <Vselect
           :placeholder="placeholder"
           :options="iterator(this.items)"

@@ -1,6 +1,6 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
-
+var path = require('path')
 module.exports = function(ctx) {
     return {
         // app boot file (/src/boot)
@@ -85,6 +85,10 @@ module.exports = function(ctx) {
                         formatter: require('eslint').CLIEngine.getFormatter('stylish')
                     }
                 })
+                cfg.resolve.alias = {
+                    ...cfg.resolve.alias,
+                    root: path.resolve(__dirname, './node_modules')
+                }
             }
         },
 
