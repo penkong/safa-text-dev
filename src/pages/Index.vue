@@ -1,34 +1,59 @@
 <template>
-  <div class="app">
-    <SafaGridView :definedCols="definedCols" :definedrows="definedrows" :gridAlign="gridAlign" />
-  </div>
+  <q-page style="width: 500px; margin: 0 auto;">
+    <div style="display: block;">
+      <SafaInput
+        :align="align"
+        :m="m"
+        :type="type"
+        :value="value"
+        :label="label"
+        :placeholder="placeholder"
+        :helper="helper"
+        :errorlabel="errorlabel"
+        :padding="padding"
+        :iconsize="iconsize"
+        :icon="icon"
+        :colored="color"
+        :c="c"
+        @inputer="checkVal"
+      />
+    </div>
+  </q-page>
 </template>
 
+<style></style>
+
 <script>
-//$ npm install --save ag-grid-community ag-grid-vue vue-property-decorator
-import SafaGridView from "../components/SafaGridView/SafaGridView";
-import { Sh_ManagerConfirm_List } from "../assets/colInfo";
-import { Sh_ManagerConfirm_Row } from "../assets/rowInfo";
+import SafaInput from "../components/SafaInput/SafaInput";
 export default {
-  name: "App",
+  name: "PageIndex",
   components: {
-    SafaGridView
+    SafaInput
   },
   data() {
     return {
-      definedCols: Sh_ManagerConfirm_List,
-      definedrows: Sh_ManagerConfirm_Row,
-      gridAlign: "righted"
+      align: "right",
+      m: "e",
+      type: "text",
+      value: "",
+      label: "نام",
+      placeholder: "ورود اطلاعات",
+      helper: "شما اینجایی",
+      errorlabel: " الزامی",
+      // not usefull
+      padding: 5,
+      // not usefull
+      iconsize: "24px",
+      // it must be base on quasar icon name
+      icon: "event",
+      color: "amber-1",
+      c: "5"
     };
+  },
+  methods: {
+    checkVal(val) {
+      console.log(val);
+    }
   }
 };
 </script>
-<style lang="scss">
-*,
-*::after,
-*::before {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-</style>

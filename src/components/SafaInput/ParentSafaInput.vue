@@ -13,25 +13,9 @@
         :padding="padding"
         :iconsize="iconsize"
         :icon="icon"
-        :color="color"
+        :colored="color"
         :c="c"
-      />
-    </div>
-    <div>
-      <SafaInput
-        :align="align"
-        :m="m"
-        :type="type"
-        :value="value"
-        label="ایمیل"
-        placeholder="ایمیل"
-        :helper="helper"
-        :errorlabel="errorlabel"
-        :padding="padding"
-        :iconsize="iconsize"
-        :icon="icon"
-        :color="color"
-        :c="c"
+        @inputer="checkVal"
       />
     </div>
   </q-page>
@@ -40,7 +24,7 @@
 <style></style>
 
 <script>
-import SafaInput from "../components/SafaInput";
+import SafaInput from "../components/SafaInput/SafaInput";
 export default {
   name: "PageIndex",
   components: {
@@ -48,11 +32,10 @@ export default {
   },
   data() {
     return {
-      align: "left",
+      align: "right",
       m: "e",
-      id: "43434",
       type: "text",
-      value: "ورود اطلاعات",
+      value: "",
       label: "نام",
       placeholder: "ورود اطلاعات",
       helper: "شما اینجایی",
@@ -63,9 +46,14 @@ export default {
       iconsize: "24px",
       // it must be base on quasar icon name
       icon: "event",
-      color: "blue",
+      color: "amber-1",
       c: "5"
     };
+  },
+  methods: {
+    checkVal(val) {
+      console.log(val);
+    }
   }
 };
 </script>
