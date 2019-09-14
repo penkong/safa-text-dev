@@ -2,10 +2,11 @@
   <div>
     <div v-if="aligned" class="safa-combo-box row" :style="{minHeigh: height, minWidth: width }">
       <div>
+        <!-- :value="selected" -->
         <Vselect
           :placeholder="placeholder"
           :options="iterator(this.items)"
-          :value="selected"
+          v-model="selected"
           @input="setSelected"
           :inputId="idOfInput"
           :disabled="read || notEditable"
@@ -203,7 +204,7 @@ export default {
   created() {
     const lastId = this.items[this.items.length - 1].code;
     this.$set(this, "lastId", lastId);
-    this.$set(this, "inputNum", this.value);
+    // this.$set(this, "inputNum", this.value);
     const generatedId = "Safa" + "_" + uid();
     this.$set(this, "idOfInput", generatedId);
     this.align === "right"
@@ -233,9 +234,6 @@ export default {
     }
   },
   methods: {
-    // onLoadItems() {
-    //   return this.$set(this, "itemsFromData", dataLoader(this.items));
-    // },
     iterator() {
       let newArr = [];
       let keysMap = {
@@ -253,22 +251,30 @@ export default {
       for (let el of this.items) {
         newArr.push(renameKeys(keysMap, el));
       }
-      // console.log(newArr);
-      return newArr;
+      return newArr || [];
     },
     handleInput($event) {
-      const itemForSelect = this.items.filter(item => item.code === $event);
-      if ($event > 0 && $event <= this.lastId) {
-        this.inputNum = parseInt($event);
-        this.selected = itemForSelect[0].label;
-        this.$emit("inputer", [$event, this.selected]);
-      } else {
+      if ($event > this.lastId) return;
+      if ($event < 0) {
         this.selected = "";
         this.inputNum = "";
+        return null;
+      }
+      try {
+        const itemForSelect = this.iterator(this.items).filter(
+          item => item.code === $event
+        );
+        console.log(itemForSelect[0].label);
+        this.inputNum = parseInt($event);
+        this.selected = itemForSelect[0].label;
+        this.$emit("inputer", { inputNum: $event, selected: this.selected });
+      } catch (error) {
+        this.selected = "";
       }
     },
     setSelected(val) {
       if (val) {
+        if (!val.label) return null;
         this.selected = val.label;
         this.inputNum = val.code;
         this.$emit("selectedVal", val);
@@ -276,6 +282,7 @@ export default {
         this.selected = null;
         this.inputNum = null;
       }
+      console.log(this.inputNum);
     }
   }
 };
