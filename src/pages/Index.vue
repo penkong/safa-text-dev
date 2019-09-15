@@ -1,48 +1,73 @@
 <template>
   <q-page class="flex flex-center">
-    <SafaDate
-      :align="align"
+    <SafaComboBox
       :m="m"
-      :type="type"
+      :c="c"
+      :align="align"
+      :height="height"
+      :width="width"
       :value="value"
       :label="label"
-      :icon="icon"
+      :dense="dense"
+      :placeholder="placeholder"
       :helper="helper"
-      :errorlabel="errorlabel"
-      :c="c"
-      @inputer="logger"
-    ></SafaDate>
+      :items="items"
+      :DtoName="DtoName"
+      :Domain="Domain"
+      :HideValue="HideValue"
+      @inputer="checkInfo"
+      @selectedVal="selectedVal"
+    />
   </q-page>
 </template>
 
-<style></style>
-
 <script>
-import SafaDate from "../components/SafaDate/SafaDate";
+import SafaComboBox from "../components/SafaComboBox/SafaComboBox";
 export default {
   name: "PageIndex",
   components: {
-    SafaDate
+    SafaComboBox
   },
   data() {
     return {
-      align: "right",
       m: "e",
-      minDate: "",
-      maxDate: "",
-      // for type date or datatime
-      type: "text",
-      value: "1398/01/01",
-      label: "زمان قرارداد",
-      icon: "today",
-      helper: "شما اینجایی",
-      errorlabel: " الزامی",
-      c: "5"
+      c: "2",
+      align: "right",
+      width: "150px",
+      height: "300px",
+      value: "",
+      label: "نظرات",
+      dense: true,
+      placeholder: "انتخاب",
+      helper: "تصحیح شود",
+      items: [
+        // sequence is important
+        // wrong { id , title}
+        // correct {title , id}  => will become {label,code}
+        { title: "ایران", id: "1" },
+        { title: "کانادا", id: "2" },
+        { title: "کره شمالی", id: "3" },
+        { title: "کره جنوبی", id: "4" },
+        { title: "آمریکا", id: "5" },
+        { title: "کاستاریکا", id: "6" },
+        { title: "جزایر مارشال", id: "7" },
+        { title: "گوام", id: "8" },
+        { title: "بنگال", id: "9" },
+        { title: "تاسمانی", id: "10" },
+        { title: "چاد", id: "11" },
+        { title: "ساحل عاج", id: "12" }
+      ],
+      DtoName: "",
+      Domain: "",
+      HideValue: true
     };
   },
   methods: {
-    logger(val) {
-      console.log(val);
+    checkInfo(val) {
+      console.log(val, "i am checkInfo");
+    },
+    selectedVal(p) {
+      console.log(p, "i am selected val");
     }
   }
 };

@@ -239,17 +239,39 @@ export default {
         title: "label",
         id: "code"
       };
-      let renameKeys = (keyzMap, obj) =>
-        Object.keys(obj).reduce(
-          (acc, key) => ({
-            ...acc,
-            ...{ [keyzMap[key] || key]: obj[key] }
-          }),
-          {}
-        );
-      for (let el of this.items) {
-        newArr.push(renameKeys(keysMap, el));
+      // function renameKeys(keyzMap, obj) {
+      //   return Object.keys(obj).reduce(
+      //     (acc, key) => ({
+      //       ...acc,
+      //       ...{ [keyzMap[key] || key]: obj[key] }
+      //     }),
+      //     {}
+      //   );
+      // }
+      function renameKeys(obj, newKeys) {
+        const keyValues = Object.keys(obj).map(key => {
+          const newKey = newKeys[key] || key;
+          return { [newKey]: obj[key] };
+        });
+        return Object.assign({}, ...keyValues);
       }
+      // let renameKeys = (keyzMap, obj) =>
+      //   Object.keys(obj).reduce(
+      //     (acc, key) => ({
+      //       ...acc,
+      //       ...{ [keyzMap[key] || key]: obj[key] }
+      //     }),
+      //     {}
+      //   );
+      // this.items.forEach(el => {
+      //   newArr.push(renameKeys(keysMap, el));
+      // });
+      this.items.forEach(el => {
+        newArr.push(renameKeys(el, keysMap));
+      });
+      // for (let el of this.items) {
+      //   newArr.push(renameKeys(keysMap, el));
+      // }
       return newArr || [];
     },
     handleInput($event) {
