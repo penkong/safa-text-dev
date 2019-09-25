@@ -1,32 +1,42 @@
 <template>
-  <div class="row relative-position">
-    <div class="sl q-ml-{c}">
-      <q-icon
-        round
-        dense
-        flat
-        class="cursor-pointer"
-        :name="icon"
-        :icon="icon"
-        :style="{'margin-right': c + 'px'}"
-      />
-      <q-checkbox
-        :disable="read || notEditable"
-        :label="label"
-        :color="color"
-        @input="handleInput($event)"
-        :left-label="aligned"
-        v-model="dataVal"
-        keep-color
-        :dense="dense"
-        tabindex="30"
-      ></q-checkbox>
-    </div>
+  <div v-if="aligned" class="row righted">
+    <label :for="label">{{ label }}</label>
+    <input
+      class="checkbox"
+      type="checkbox"
+      :disabled="read || notEditable"
+      :checked="value"
+      :name="label"
+      :value="value"
+      v-model="dataVal"
+      @input="handleInput($event)"
+    />
+    <!-- <q-checkbox
+      :disable="read || notEditable"
+      :label="label"
+      :color="color"
+      @input="handleInput($event)"
+      :left-label="aligned"
+      v-model="dataVal"
+      keep-color
+      :dense="dense"
+      tabindex="30"
+    ></q-checkbox>-->
+  </div>
+  <div class="row lefted" v-else>
+    <input
+      type="checkbox"
+      :disabled="read || notEditable"
+      :checked="value"
+      :name="label"
+      :value="value"
+      @input="handleInput($event)"
+    />
+    <label :for="label">{{ label }}</label>
   </div>
 </template>
 
 <script>
-// https://codepen.io/smolinari/pen/BaBwaZO?editors=1010
 import uid from "uuid/v4";
 export default {
   name: "SafaCheckBox",
@@ -93,7 +103,6 @@ export default {
       default: "4"
     }
   },
-
   created() {
     const generatedId = "Safa" + "_" + uid();
     this.$set(this, "idOfInput", generatedId);
@@ -118,11 +127,61 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import url("http://cdn.font-store.ir/behdad.css");
-div {
-  .sl {
-    font-family: "behdad", "Courier New", "Courier", "monospace";
-    font-size: 1rem;
-    font-weight: 500;
+
+.righted {
+  font-family: "behdad", "Courier New", "Courier", "monospace";
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  label {
+    margin-right: 0.4rem;
+    // background-color: red;
+    padding: 1px;
   }
+}
+.lefted {
+  font-family: "behdad", "Courier New", "Courier", "monospace";
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  label {
+    margin-left: 0.4rem;
+    // background-color: red;
+    padding: 1px;
+  }
+}
+input[type="checkbox"] {
+  position: relative;
+  cursor: pointer;
+}
+input[type="checkbox"]:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0.8rem;
+  height: 0.8rem;
+  top: 0;
+  left: 0;
+  border: 1px solid #003668;
+  border-radius: 3px;
+  background-color: white;
+}
+input[type="checkbox"]:checked:after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 12px;
+  border: solid #003668;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: absolute;
+  top: -1px;
+  left: 5px;
 }
 </style>
