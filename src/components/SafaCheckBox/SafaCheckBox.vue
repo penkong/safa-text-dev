@@ -1,5 +1,5 @@
 <template>
-  <div v-if="aligned" class="row righted">
+  <div v-if="aligned" class="righted">
     <label :for="label">{{ label }}</label>
     <input
       class="checkbox"
@@ -11,19 +11,8 @@
       v-model="dataVal"
       @input="handleInput($event)"
     />
-    <!-- <q-checkbox
-      :disable="read || notEditable"
-      :label="label"
-      :color="color"
-      @input="handleInput($event)"
-      :left-label="aligned"
-      v-model="dataVal"
-      keep-color
-      :dense="dense"
-      tabindex="30"
-    ></q-checkbox>-->
   </div>
-  <div class="row lefted" v-else>
+  <div class="lefted" v-else>
     <input
       type="checkbox"
       :disabled="read || notEditable"

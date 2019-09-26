@@ -1,42 +1,56 @@
 <template>
-  <q-page class="flex flex-center">
-    <SafaCheckBox
-      :align="align"
-      :icon="icon"
-      :helper="helper"
-      :errorlabel="errorlabel"
-      :m="m"
-      :c="c"
-      :value="value"
-      :label="label"
-      :color="color"
-      :dense="dense"
-      @checked="checkInfo"
-    />
-  </q-page>
+  <SafaInput
+    :align="align"
+    :m="m"
+    :type="type"
+    :value="value"
+    :label="label"
+    :placeholder="placeholder"
+    :helper="helper"
+    :maxChar="maxChar"
+    :widthOfInput="widthOfInput"
+    :widthOfRow="widthOfRow"
+    :errorlabel="errorlabel"
+    :icon="icon"
+    :colored="color"
+    :c="c"
+    :minChar="minChar"
+    @inputer="checkVal"
+  />
 </template>
 
+<style></style>
+
 <script>
-import SafaCheckBox from "../components/SafaCheckBox/SafaCheckBox";
+import SafaInput from "../components/SafaInput/SafaInput";
 export default {
   name: "PageIndex",
   components: {
-    SafaCheckBox
+    SafaInput
   },
   data() {
     return {
-      align: "left",
+      align: "right",
       m: "e",
-      value: "true",
-      label: "سلام",
-      icon: "warning",
+      type: "text",
+      value: "",
+      label: "نام",
+      placeholder: "ورود اطلاعات",
       helper: "شما اینجایی",
       errorlabel: " الزامی",
-      c: "4"
+      maxChar: 65,
+      minChar: 3,
+      // it must be base on quasar icon name
+      icon: "event",
+      color: "rgb(236, 236, 236)",
+      //rem
+      widthOfRow: "13",
+      widthOfInput: "12",
+      c: "1"
     };
   },
   methods: {
-    checkInfo(val) {
+    checkVal(val) {
       console.log(val);
     }
   }

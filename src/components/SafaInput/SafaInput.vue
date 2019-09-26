@@ -1,66 +1,42 @@
 <template>
-  <div class="safa-input" style="margin-top: 5rem;">
-    <!-- readonly counter -->
-    <div class="label-container">
-      <label v-if="aligned" :for="idOfInput" class="label" :style="{ right: -c + 'rem'}">{{ label }}</label>
-      <label v-else :for="idOfInput" class="left-label" :style="{ left: -c + 'rem'}">{{ label }}</label>
-    </div>
-    <div class="input-container">
-      <!-- standout="bg-lime-1 text-{color}" -->
-      <q-input
-        rounded
-        flat
-        borderless
-        :bg-color="colored"
-        bottom-slots
-        :readonly="read"
-        :disable="notEditable"
-        :id="idOfInput"
-        :dense="dense"
-        style="max-height: 10px;padding: 0;"
-        @input="handleInput($event)"
-        ref="input"
-        lazy-rules
-        counter
-        maxlength="65"
+  <div :style="{maxWidth: `${widthOfRow}rem`}">
+    <div v-if="aligned" class="aligned">
+      <input
+        :min="minChar"
+        :max="maxChar"
+        :disabled="read || notEditable"
         v-model="text"
         :value="value"
-        :placeholder="placeholder"
         :type="type"
-        :input-class="{ 'label-aligned': aligned }"
-        :hint="helper"
-        :rules="[
-        val => !!val  || errorlabel ,
-        val => val.length >= 3 || 'حداقل 3 کاراکتر'
-      ]"
-      >
-        <template v-if="aligned" v-slot:prepend>
-          <q-icon
-            v-if="text && !read && !notEditable"
-            round
-            dense
-            flat
-            class="cursor-pointer"
-            name="cancel"
-            icon="cancel"
-            @click.stop="text = null"
-            @click.prevent="reset"
-          />
-        </template>
-        <template v-else v-slot:append>
-          <q-icon
-            v-if="text && !read && !notEditable"
-            round
-            dense
-            flat
-            class="cursor-pointer"
-            name="cancel"
-            icon="cancel"
-            @click.stop="text = null"
-            @click.prevent="reset"
-          />
-        </template>
-      </q-input>
+        :id="idOfInput"
+        :name="idOfInput"
+        @input="handleInput($event.target.value)"
+        :style="{
+          marginRight: `${c}rem`,
+          maxWidth: `${widthOfInput}rem`,
+          'background-color': `${colored}`,
+        }"
+      />
+      <label :for="idOfInput">{{ label }}</label>
+    </div>
+    <div v-if="!aligned" class="left-aligned" :style="{width: `${widthOfRow}rem`}">
+      <label :for="idOfInput" :style="{ marginLeft: -c + 'rem'}">{{ label }}</label>
+      <input
+        :min="minChar"
+        :max="maxChar"
+        :disabled="read || notEditable"
+        v-model="text"
+        :value="value"
+        :type="type"
+        :id="idOfInput"
+        :name="idOfInput"
+        @input="handleInput($event.target.value)"
+        :style="{
+          marginLeft: `${c}rem`,
+          maxWidth: `${widthOfInput}rem`,
+          'background-color': `${colored}`,
+        }"
+      />
     </div>
   </div>
 </template>
@@ -76,7 +52,6 @@ export default {
       aligned: null,
       idOfInput: null,
       text: "",
-      dense: true,
       values: true
     };
   },
@@ -87,7 +62,9 @@ export default {
       default: "right",
       validator: v => ["right", "left"].includes(v)
     },
-
+    minChar: {
+      type: Number
+    },
     m: {
       // read write
       type: String,
@@ -105,12 +82,21 @@ export default {
       type: String,
       default: ""
     },
+    maxChar: {
+      type: Number
+    },
     // rahnameee
     helper: { type: String, default: "شما اینجایی" },
     errorlabel: { type: String, default: "تصحیح شود" },
     padding: {
       type: Number,
       default: 7
+    },
+    widthOfRow: {
+      type: String
+    },
+    widthOfInput: {
+      type: String
     },
     iconsize: { type: String, default: "24px" },
     icon: { type: String, default: "add" },
@@ -141,6 +127,13 @@ export default {
       default: "4"
     }
   },
+  computed: {
+    objectFromProp() {
+      return {
+        marginLeft: `${this.c}rem`
+      };
+    }
+  },
   created() {
     this.$set(this, "text", this.value);
     const generatedId = "Safa" + "_" + uid();
@@ -161,8 +154,12 @@ export default {
     reset() {
       this.$refs.input.resetValidation();
     },
-    handleInput($event) {
-      this.$emit("inputer", $event);
+    handleInput(val) {
+      const { minChar, maxChar } = this;
+      if (val.length < minChar && val.length > maxChar) {
+        return;
+      }
+      this.$emit("inputer", val);
     }
   }
 };
@@ -170,121 +167,46 @@ export default {
 
 <style lang='scss'>
 @import url("http://cdn.font-store.ir/behdad.css");
-.safa-input {
-  font-family: "behdad", "Courier New", Courier, monospace;
-  padding: 0;
-  margin: 0;
-  width: auto;
-  position: relative;
-  // font-size: 0.8rem;
-  .label-container {
-    position: relative;
-    & .label {
-      position: absolute;
-      padding: 0 10px;
-      bottom: -1.35rem;
+div {
+  .aligned {
+    font-family: "behdad", "Courier New", Courier, monospace;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    input {
+      border-radius: 4px;
+      padding: 1px 3px;
+      border: none;
+      background-color: rgb(236, 236, 236);
+      outline: none;
+      direction: rtl;
+      &:invalid {
+        border: 1px solid red;
+      }
     }
-    & .left-label {
-      position: absolute;
-      padding: 0 4px;
-      bottom: -1.35rem;
+    label {
     }
-  }
-  .q-field--dense .q-field__control {
-    height: 30px !important;
-    padding: 0 3px !important;
-    font-size: 1rem;
-  }
-  .q-field__inner {
-    min-width: 3.5rem;
   }
 
-  .q-icon,
-  .material-icons {
-    margin-bottom: 0.6rem;
-    margin-left: -0.6rem;
-    position: absolute;
-    cursor: pointer;
-    left: 12px;
-    top: 4px;
-    .text-negative {
-      background-color: red;
+  .left-aligned {
+    font-family: "behdad", "Courier New", Courier, monospace;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    // background-color: rgb(165, 157, 157);
+
+    input {
+      border-radius: 4px;
+      border: none;
+      background-color: rgb(224, 241, 255);
+      outline: none;
+      // background-color: red;
     }
-  }
-  .input-container {
-    position: relative;
-    margin: 0 auto;
-    padding: 5px;
-    margin-left: 10px;
-    .label-aligned {
-      text-align: right;
-    }
-    .q-field__control .relative-position {
-      padding: 0 px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .q-field__bottom,
-    .q-field__bottom--animated div {
-      margin-top: 0.2rem;
+    label {
     }
   }
 }
-// .safa-input {
-//   font-family: "behdad", "Courier New", Courier, monospace;
-//   padding: 0;
-//   margin: 0;
-//   width: auto;
-//   position: relative;
-//   // font-size: 0.8rem;
-//   .label-container {
-//     position: relative;
-//     & .label {
-//       position: absolute;
-//       padding: 0 10px;
-//       bottom: -1.35rem;
-//     }
-//     & .left-label {
-//       position: absolute;
-//       padding: 0 4px;
-//       bottom: -1.35rem;
-//     }
-//   }
-//   .q-field--dense .q-field__control {
-//     height: 30px !important;
-//     padding: 0 3px !important;
-//     font-size: 1rem;
-//   }
-//   .q-field__inner {
-//     min-width: 3.5rem;
-//   }
-
-//   .q-icon,
-//   .material-icons {
-//     margin-bottom: 0.6rem;
-//     margin-left: -0.6rem;
-//     position: absolute;
-//     left: 0;
-//     top: 4px;
-//     .text-negative {
-//       background-color: red;
-//     }
-//   }
-//   .input-container {
-//     position: relative;
-//     margin: 0 auto;
-//     padding: 5px;
-//     margin-left: 10px;
-//     .label-aligned {
-//       text-align: right;
-//     }
-//     .q-field__control .relative-position {
-//       padding: 0 px;
-//       display: flex;
-//       align-items: center;
-//       justify-content: center;
-//     }
-//   }
-// }
 </style>

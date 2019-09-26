@@ -4,20 +4,17 @@
       :align="align"
       :icon="icon"
       :helper="helper"
-      :errorlabel="errorlabel"
       :m="m"
       :c="c"
       :value="value"
       :label="label"
-      :color="color"
-      :dense="dense"
       @checked="checkInfo"
     />
   </q-page>
 </template>
 
 <script>
-import SafaCheckBox from "../components/SafaCheckBox";
+import SafaCheckBox from "../components/SafaCheckBox/SafaCheckBox";
 export default {
   name: "PageIndex",
   components: {
@@ -25,16 +22,14 @@ export default {
   },
   data() {
     return {
-      align: "right",
+      align: "left",
       m: "e",
-      value: "false",
-      label: "زمان قرارداد",
-      icon: "",
+      value: "true",
+      label: "سلام",
+      icon: "warning",
       helper: "شما اینجایی",
       errorlabel: " الزامی",
-      c: "4",
-      color: "light-blue-10",
-      dense: false
+      c: "4"
     };
   },
   methods: {
