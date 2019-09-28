@@ -1,24 +1,22 @@
 <template>
-  <q-page style="width: 500px; margin: 0 auto;">
-    <div style="display: block;">
-      <SafaInput
-        :align="align"
-        :m="m"
-        :type="type"
-        :value="value"
-        :label="label"
-        :placeholder="placeholder"
-        :helper="helper"
-        :errorlabel="errorlabel"
-        :padding="padding"
-        :iconsize="iconsize"
-        :icon="icon"
-        :colored="color"
-        :c="c"
-        @inputer="checkVal"
-      />
-    </div>
-  </q-page>
+  <SafaInput
+    :align="align"
+    :m="m"
+    :type="type"
+    :value="value"
+    :label="label"
+    :placeholder="placeholder"
+    :helper="helper"
+    :maxChar="maxChar"
+    :widthOfInput="widthOfInput"
+    :widthOfRow="widthOfRow"
+    :errorlabel="errorlabel"
+    :icon="icon"
+    :colored="color"
+    :c="c"
+    :minChar="minChar"
+    @inputer="checkVal"
+  />
 </template>
 
 <style></style>
@@ -40,14 +38,15 @@ export default {
       placeholder: "ورود اطلاعات",
       helper: "شما اینجایی",
       errorlabel: " الزامی",
-      // not usefull
-      padding: 5,
-      // not usefull
-      iconsize: "24px",
+      maxChar: 65,
+      minChar: 3,
       // it must be base on quasar icon name
       icon: "event",
-      color: "amber-1",
-      c: "5"
+      color: "rgb(236, 236, 236)",
+      //rem
+      widthOfRow: "13",
+      widthOfInput: "12",
+      c: "1"
     };
   },
   methods: {

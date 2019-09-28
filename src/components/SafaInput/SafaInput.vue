@@ -4,13 +4,13 @@
       <input
         :min="minChar"
         :max="maxChar"
-        :disabled="read || notEditable"
-        v-model="text"
         :value="value"
+        @input="handleInput($event.target.value)"
+        :disabled="read || notEditable"
         :type="type"
         :id="idOfInput"
         :name="idOfInput"
-        @input="handleInput($event.target.value)"
+        v-model.lazy="text"
         :style="{
           marginRight: `${c}rem`,
           maxWidth: `${widthOfInput}rem`,
@@ -154,6 +154,7 @@ export default {
     reset() {
       this.$refs.input.resetValidation();
     },
+
     handleInput(val) {
       const { minChar, maxChar } = this;
       if (val.length < minChar && val.length > maxChar) {
