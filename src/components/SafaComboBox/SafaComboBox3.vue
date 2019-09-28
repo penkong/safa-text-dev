@@ -18,22 +18,24 @@
         </Vselect>
       </div>
       <div class="input-container">
-        <input
+        <q-input
+          rounded
+          flat
+          borderless
+          bg-color="blue-1"
+          bottom-slots
           :readonly="read"
           :disable="notEditable"
           :id="idOfInput"
+          :dense="dense"
           type="number"
-          :style="{
-            height: '1.5rem',
-            width: '3rem',
-            padding: '1px 3px',
-            border: 'none',
-            borderRadius: '3px',
-            ouline: 'none',
-            backgroundColor: '#d4ecff',
-          }"
+          style="max-height: 10px;padding: 0;"
+          @input="handleInput($event)"
+          lazy-rules
+          maxlength="12"
+          :input-style="cssProps"
           v-model="inputNum"
-        />
+        ></q-input>
       </div>
       <label :for="idOfInput" class="label-container label" :style="{right: -c + 'px'}">{{ label }}</label>
     </div>
@@ -44,17 +46,24 @@
         :style="{ left: -c + 'rem'}"
       >{{ label }}</label>
       <div class="input-container">
-        <input
+        <q-input
+          rounded
+          flat
+          borderless
+          bg-color="blue-1"
+          bottom-slots
           :readonly="read"
           :disable="notEditable"
           :id="idOfInput"
+          :dense="dense"
           type="number"
-          :style="{
-            height:'1rem'
-          }"
+          style="max-height: 10px;padding: 0;"
           @input="handleInput($event)"
+          lazy-rules
+          maxlength="12"
+          :input-style="cssProps"
           v-model="inputNum"
-        />
+        ></q-input>
       </div>
       <div>
         <Vselect
@@ -93,8 +102,7 @@ export default {
       selected: "",
       lastId: null,
       error: false,
-      itemsFromData: null,
-      optionz: null
+      itemsFromData: null
     };
   },
   components: {
@@ -193,9 +201,9 @@ export default {
     }
   },
   created() {
-    if (this.items) {
-      this.$set(this, "lastId", this.items.length);
-    }
+    const lastId = this.items[this.items.length - 1].code;
+    this.$set(this, "lastId", lastId);
+    // this.$set(this, "inputNum", this.value);
     const generatedId = "Safa" + "_" + uid();
     this.$set(this, "idOfInput", generatedId);
     this.align === "right"
@@ -231,6 +239,15 @@ export default {
         title: "label",
         id: "code"
       };
+      // function renameKeys(keyzMap, obj) {
+      //   return Object.keys(obj).reduce(
+      //     (acc, key) => ({
+      //       ...acc,
+      //       ...{ [keyzMap[key] || key]: obj[key] }
+      //     }),
+      //     {}
+      //   );
+      // }
       function renameKeys(obj, newKeys) {
         const keyValues = Object.keys(obj).map(key => {
           const newKey = newKeys[key] || key;
@@ -238,36 +255,43 @@ export default {
         });
         return Object.assign({}, ...keyValues);
       }
+      // let renameKeys = (keyzMap, obj) =>
+      //   Object.keys(obj).reduce(
+      //     (acc, key) => ({
+      //       ...acc,
+      //       ...{ [keyzMap[key] || key]: obj[key] }
+      //     }),
+      //     {}
+      //   );
+      // this.items.forEach(el => {
+      //   newArr.push(renameKeys(keysMap, el));
+      // });
       this.items.forEach(el => {
         newArr.push(renameKeys(el, keysMap));
       });
-      this.$set(this, "optionz", newArr);
-      return newArr;
+      // for (let el of this.items) {
+      //   newArr.push(renameKeys(keysMap, el));
+      // }
+      return newArr || [];
     },
     handleInput($event) {
-      if ($event > this.lastId) this.inputNum = this.lastId;
+      if ($event > this.lastId) return;
       if ($event < 0) {
         this.selected = "";
         this.inputNum = "";
         return null;
       }
-      const arr = this.iterator(this.items);
-      const item = arr.find(el => {
-        el.code === this.inputNum;
-      });
-      console.log(arr);
-      console.log(item);
-      const itemForSelect = this.iterator(this.items).filter(
-        item => item.code === $event
-      );
-
-      console.log(itemForSelect[0].label);
-      this.inputNum = parseInt($event);
-      this.selected = itemForSelect[0].label;
-      this.$emit("inputer", {
-        inputNum: $event.target.value,
-        selected: this.selected
-      });
+      try {
+        const itemForSelect = this.iterator(this.items).filter(
+          item => item.code === $event
+        );
+        console.log(itemForSelect[0].label);
+        this.inputNum = parseInt($event);
+        this.selected = itemForSelect[0].label;
+        this.$emit("inputer", { inputNum: $event, selected: this.selected });
+      } catch (error) {
+        this.selected = "";
+      }
     },
     setSelected(val) {
       if (val) {
@@ -279,7 +303,7 @@ export default {
         this.selected = null;
         this.inputNum = null;
       }
-      console.log(this.inputNum, "this input num");
+      console.log(this.inputNum);
     }
   }
 };
@@ -299,7 +323,6 @@ export default {
   .q-field--dense .q-field__control {
     font-family: Arial, Helvetica, sans-serif;
     color: #0070cc;
-
     height: 20px !important;
     width: 3rem;
     padding: 0 3px !important;

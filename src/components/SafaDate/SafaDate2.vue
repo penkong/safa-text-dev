@@ -1,61 +1,65 @@
 <template>
   <div class="safa-data">
     <!-- step 1 -->
-
+    <date-picker
+      element="my-custom-editable-input"
+      :editable="read"
+      :disabled="read"
+      :v-model="type"
+      :show="show"
+      :min="minDate"
+      :max="maxDate"
+      :highlight="highlight"
+      :auto-submit="true"
+      @input="handleInput($event)"
+      @close="show=false"
+      locale="fa"
+      color="#216583"
+      inputFormat="YYYY-MM-DD HH:mm"
+      format="jYYYY - jMM - jDD  --  HH:mm"
+      type="datetime"
+      appendTo="body"
+      inputClass="form-control"
+    />
     <!-- step 2 -->
-
-    <button
+    <q-btn
       :loading="loadingGear"
       :disabled="read"
       @click="show=true"
       @click.prevent="simulateProgress"
+      round
+      dense
       type="button"
+      size="0.8rem"
+      color="light-blue-9"
+      text-color="white"
       icon="today"
-      :style="{
-        marginLeft: '1rem',
-        width: '1.5rem',
-        height: '1.5rem',
-        border: 'none',
-        borderRadius: '50%',
-        backgroundColor: 'red',
-      }"
     >
-      <i class="far fa-calendar-alt" style="color: white;"></i>
-      <date-picker
-        element="my-custom-editable-input"
-        :editable="read"
-        :disabled="read"
-        :v-model="type"
-        :show="show"
-        :min="minDate"
-        :max="maxDate"
-        :highlight="highlight"
-        :auto-submit="true"
-        @input="handleInput($event)"
-        @close="show=false"
-        locale="fa"
-        color="#297af2"
-        inputFormat="YYYY-MM-DD HH:mm"
-        format="jYYYY - jMM - jDD  --  HH:mm"
-        type="datetime"
-        appendTo="body"
-      />
-      <!-- inputClass="form-control" -->
-    </button>
-    <input
-      id="my-custom-editable-input"
+      <template v-slot:loading>
+        <q-spinner-gears />
+      </template>
+    </q-btn>
+    <!-- step 3 -->
+    <q-input
       :disable="read"
       :placeholder="value"
       :hint="hinter()"
       v-model="datetime"
+      borderless
+      dense
+      bg-color="lime-1"
+      id="my-custom-editable-input"
       type="text"
-      :style="{
-        marginLeft: '1rem',
-        border: 'none',
-        backgroundColor: 'red',
-        padding: '1px 4px 1px 4px'
-      }"
-    />
+      class="form-control is-editable for-input"
+    >
+      <template v-slot:hint>field hint</template>
+      <template v-slot:append>
+        <q-item-label
+          style="font-family: 'behdad', 'Courier New', Courier, monospace;"
+          header
+        >{{ label }}</q-item-label>
+      </template>
+    </q-input>
   </div>
 </template>
 
@@ -117,9 +121,6 @@ export default {
     },
     helper: { type: String, default: "شما اینجایی" },
     errorlabel: { type: String, default: "تصحیح شود" },
-    objColor: {
-      type: Object
-    },
     c: {
       type: String,
       validator: v =>
@@ -191,7 +192,7 @@ export default {
 .for-input {
   display: inline-block;
   border: none;
-  padding: 0.35rem;
+  padding: 0.75rem;
   width: 90%;
 }
 </style>
